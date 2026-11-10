@@ -6,6 +6,8 @@
   var EXAMPLES = window.EXAMPLES || {};
   var LINES = (window.LEX_INDEX || "").split("\n").filter(Boolean);
   var UG = window.UGConv;
+  var I18N = window.I18N;
+  function T(k, v) { return I18N ? I18N.t(k, v) : k; }
 
   var MORPH = window.UGMorph;
   var coreMap = new Map();
@@ -225,18 +227,18 @@
     var h = '<article class="hero">';
     h += '<div class="hero-head"><div class="zh">' + esc(zh) + "</div>" +
       (py ? '<div class="py">' + esc(py) + "</div>" : "") +
-      '<div class="badge">' + senses.length + " 个义项</div></div>";
+      '<div class="badge">' + T("badge_senses", { n: senses.length }) + "</div></div>";
     h += '<div class="senses">';
     senses.forEach(function (s, i) {
       var k = "s" + i;
       var extra = i >= 6 ? ' extra" hidden' : '"';
       h += '<div class="sense' + extra + "><div class=\"num\">" + (i + 1) + "</div>" +
         '<div class="body">' + tokHtml(s[0], s[1], "ug", k) + tokHtml(s[0], s[1], "ul", k) + "</div>" +
-        '<div class="acts"><button type="button" data-copy="' + esc(s[0]) + '" data-copy2="' + esc(s[1]) + '">复制</button></div></div>';
+        '<div class="acts"><button type="button" data-copy="' + esc(s[0]) + '" data-copy2="' + esc(s[1]) + '">' + T("btn_copy") + "</button></div></div>";
     });
     h += "</div>";
     if (senses.length > 6) {
-      h += '<button type="button" class="more" data-expand="1">展开全部 ' + senses.length + " 个义项</button>";
+      h += '<button type="button" class="more" data-expand="1">' + T("more_senses", { n: senses.length }) + "</button>";
     }
     h += exampleHtml(zh);
     if (!EXAMPLES[zh]) h += '<div class="ex-slot" data-zh="' + esc(zh) + '"></div>';
@@ -263,7 +265,7 @@
   function exampleHtml(zh, arr) {
     arr = arr || EXAMPLES[zh];
     if (!arr || !arr.length) return "";
-    var h = '<div class="section-title">例句</div>';
+    var h = '<div class="section-title">' + T("ex_title") + "</div>";
     arr.forEach(function (e) {
       h += '<div class="ex">' +
         '<div class="ex-zh">' + esc(e[0]) + "</div>" +
@@ -303,13 +305,13 @@
       }
     }
     if (!rows.length) return "";
-    var h = '<div class="section-title">以「' + esc(zh) + "」开头</div><div class=\"rows\">";
+    var h = '<div class="section-title">' + esc(T("family", { w: zh })) + '</div><div class="rows">';
     rows.forEach(function (r) {
       var e = coreMap.get(r.zh);
       h += '<button type="button" class="row" data-zh="' + esc(r.zh) + '" data-b="' + r.b + '" data-i="' + r.i + '">' +
         '<span class="rz">' + esc(r.zh) + "</span>" +
         (e && e[1] ? '<span class="rp">' + esc(e[1]) + "</span>" : "") +
-        '<span class="rn">' + (e ? (e[2] || []).length + " 义" : "") + "</span>" +
+        '<span class="rn">' + (e ? T("n_senses", { n: (e[2] || []).length }) : "") + "</span>" +
         '<span class="arrow">›</span></button>';
     });
     return h + "</div>";
@@ -323,7 +325,7 @@
       '" data-i="' + (r.i || 0) + '">' +
       '<span class="rz">' + esc(zh) + "</span>" +
       (py ? '<span class="rp">' + esc(py) + "</span>" : "") +
-      '<span class="rn">' + esc(note || (e ? (e[2] || []).length + " 义" : "")) + "</span>" +
+      '<span class="rn">' + esc(note || (e ? T("n_senses", { n: (e[2] || []).length }) : "")) + "</span>" +
       '<span class="arrow">›</span></button>';
   }
 
@@ -398,13 +400,13 @@
     var h = '<article class="hero ughero">';
     h += '<div class="hero-head"><div class="ug big-ug tok" role="button" tabindex="0" lang="ug-Arab" dir="rtl" data-k="head" data-uey="' +
       esc(uey) + '" data-uly="' + esc(uly) + '">' + esc(uey) + "</div>" +
-      '<div class="badge">维语词条</div></div>';
+      '<div class="badge">' + T("ug_entry_badge") + "</div></div>";
     h += '<div class="ul big-ul" lang="ug-Latn" dir="ltr">' + esc(uly) + "</div>";
-    h += '<div class="section-title">汉文释义</div><div class="gloss-list">';
+    h += '<div class="section-title">' + T("ug_glosses") + '</div><div class="gloss-list">';
     zh.forEach(function (z) {
       var cn = (z.split(/\s+/)[0] || z);
       h += '<button type="button" class="gloss" data-zh="' + esc(cn) + '">' +
-        '<span class="gz">' + esc(z) + '</span><span class="ga">查汉文 ›</span></button>';
+        '<span class="gz">' + esc(z) + '</span><span class="ga">' + T("lookup_zh") + "</span></button>";
     });
     h += "</div></article>";
     return h;
@@ -414,7 +416,7 @@
     var first = res.exact[0] || res.prefix[0];
     if (!first) return;
     resultsEl.className = "mode-" + mode;
-    resultsEl.innerHTML = '<div class="hero" id="pendingUg"><div class="hero-head"><div class="zh">…</div><div class="badge">载入中…</div></div></div>';
+    resultsEl.innerHTML = '<div class="hero" id="pendingUg"><div class="hero-head"><div class="zh">…</div><div class="badge">' + T("loading") + "</div></div></div>";
     emptyEl.hidden = true;
     loadUgChunk(first.b, function (err, arr) {
       var cur = document.getElementById("pendingUg");
@@ -422,11 +424,11 @@
       var more = res.exact.length - 1;
       var h = ugEntryHtml(arr[first.i]);
       if (more > 0) {
-        h += '<div class="section-title">同形词条</div><div class="rows"><div class="row" style="cursor:default">' +
-          '<span class="rz">另有 ' + more + " 个同形词条</span></div></div>";
+        h += '<div class="section-title">' + T("homographs") + '</div><div class="rows"><div class="row" style="cursor:default">' +
+          '<span class="rz">' + T("homographs_more", { n: more }) + "</span></div></div>";
       }
       cur.outerHTML = h;
-      countEl.textContent = "维语词条 · 全库 " + (META.ugEntries || 385396).toLocaleString() + " 条";
+      countEl.textContent = T("foot_ug", { n: (META.ugEntries || 385396).toLocaleString() });
     });
   }
 
@@ -436,9 +438,9 @@
     if (!q) {
       resultsEl.innerHTML = "";
       emptyEl.hidden = true;
-      countEl.textContent = "全库 " + (META.entries || 0).toLocaleString() + " 词 · " +
-        (META.senses || 0).toLocaleString() + " 义项 · " +
-        (window.EX_COUNT ? "例句 " + window.EX_COUNT.toLocaleString() + " 条" : (META.core || 0).toLocaleString() + " 核心词条已载入");
+      countEl.textContent = window.EX_COUNT
+        ? T("foot_all", { n: (META.entries || 0).toLocaleString(), s: (META.senses || 0).toLocaleString(), e: window.EX_COUNT.toLocaleString() })
+        : T("foot_core", { n: (META.entries || 0).toLocaleString(), s: (META.senses || 0).toLocaleString(), c: (META.core || 0).toLocaleString() });
       return;
     }
 
@@ -452,14 +454,14 @@
       r.prefix.forEach(function (x) { if (hero !== x) rows.push(x); });
       r.contains.forEach(function (x) { rows.push(x); });
     } else if (isArabic(q)) {
-      resultsEl.innerHTML = '<div class="empty"><p class="small">正在加载维语词库…</p></div>';
+      resultsEl.innerHTML = '<div class="empty"><p class="small">' + T("loading_ug") + "</p></div>";
       searchUg(q, function (res) {
         if (res && (res.exact.length || res.prefix.length)) {
           renderUgResults(res);
         } else {
           resultsEl.innerHTML = "";
           emptyEl.hidden = false;
-          countEl.textContent = "没有找到维语词条";
+          countEl.textContent = T("not_found_ug");
         }
       });
       return;
@@ -470,14 +472,14 @@
         var l = searchLatin(q);
         if (l.length) { hero = l[0]; rows = l.slice(1); }
       } else {
-        resultsEl.innerHTML = '<div class="empty"><p class="small">正在加载维语词库…</p></div>';
+        resultsEl.innerHTML = '<div class="empty"><p class="small">' + T("loading_ug") + "</p></div>";
         searchUg(q, function (res) {
           if (res && (res.exact.length || res.prefix.length)) {
             renderUgResults(res);
           } else {
             resultsEl.innerHTML = "";
             emptyEl.hidden = false;
-            countEl.textContent = "没有找到";
+            countEl.textContent = T("not_found");
           }
         });
         return;
@@ -490,7 +492,7 @@
         html += heroHtml(hero.entry);
       } else {
         html += '<div class="hero" id="pendingHero"><div class="hero-head"><div class="zh">' +
-          esc(hero.zh) + '</div><div class="badge">载入中…</div></div></div>';
+          esc(hero.zh) + '</div><div class="badge">' + T("loading") + "</div></div></div>";
         loadChunk(hero.b, function (err, arr) {
           if (err || !arr || !arr[hero.i]) return;
           var card = heroHtml(arr[hero.i]);
@@ -513,7 +515,7 @@
     });
 
     if (more.length) {
-      html += '<div class="section-title">其他相关词</div><div class="rows">';
+      html += '<div class="section-title">' + T("related") + '</div><div class="rows">';
       more.slice(0, 40).forEach(function (x) { html += rowHtml(x); });
       html += "</div>";
     }
@@ -522,8 +524,9 @@
     hydrateExamples();
     emptyEl.hidden = !!(hero || more.length);
     var n = (hero ? 1 : 0) + more.length;
-    countEl.textContent = n ? "找到 " + n + " 条 · 全库 " + (META.entries || 0).toLocaleString() + " 词" :
-      "全库 " + (META.entries || 0).toLocaleString() + " 词";
+    countEl.textContent = n
+      ? T("foot_found", { n: n, m: (META.entries || 0).toLocaleString() })
+      : T("foot_all_short", { m: (META.entries || 0).toLocaleString() });
   }
 
   // ---------- 详情（分片） ----------
@@ -570,19 +573,19 @@
     }
 
     var html = '<div class="pop-head"><span class="pop-badge">' +
-      (isUey ? "老维文 · 点击查看拉丁" : "拉丁维文 · 点击查看老维") +
-      '</span><button type="button" class="pop-x" aria-label="关闭">×</button></div>';
+      (isUey ? T("pop_uey_badge") : T("pop_uly_badge")) +
+      '</span><button type="button" class="pop-x" aria-label="' + esc(T("close")) + '">×</button></div>';
     html += '<div class="ug pop-ug" lang="ug-Arab" dir="rtl">' + esc(uey) + "</div>";
     html += '<div class="ul pop-ul" lang="ug-Latn" dir="ltr">' + esc(uly) + "</div>";
 
     if (hit) {
       html += '<div class="pop-gloss"><span class="zh">' + esc(hit.zh) + "</span>" +
         (hit.py ? '<span class="py">' + esc(hit.py) + "</span>" : "") +
-        '<div style="font-size:11.5px;color:var(--muted);margin-top:3px">词典对应词条</div></div>';
+        '<div style="font-size:11.5px;color:var(--muted);margin-top:3px">' + T("pop_entry") + "</div></div>";
     } else if (morph) {
       var lmUly = UG.uey2ul(morph.lemma);
       html += '<div class="pop-gloss">';
-      html += '<div class="pop-morph"><span class="pop-label">原形</span>' +
+      html += '<div class="pop-morph"><span class="pop-label">' + T("pop_lemma") + "</span>" +
         '<span class="ug pop-lemma" lang="ug-Arab" dir="rtl">' + esc(morph.lemma) + "</span>" +
         '<span class="ul pop-lemma-ul" lang="ug-Latn" dir="ltr">' + esc(lmUly) + "</span></div>";
       if (morph.chain.length) {
@@ -594,16 +597,16 @@
         html += '<div class="pop-gloss-line"><span class="zh">' + esc(morphHit.zh) + "</span>" +
           (morphHit.py ? '<span class="py">' + esc(morphHit.py) + "</span>" : "") + "</div>";
       } else {
-        html += '<div class="pop-note">原形未在核心词库中找到，可能是专名或长尾词。</div>';
+        html += '<div class="pop-note">' + T("pop_lemma_miss") + "</div>";
       }
       html += "</div>";
     } else {
-      html += '<div class="pop-note">未作为独立词条收录，可能是屈折形式、短语或专名。两种文字已按规则互转。</div>';
+      html += '<div class="pop-note">' + T("pop_miss") + "</div>";
     }
 
     html += '<div class="pop-actions">' +
-      '<button type="button" data-cp="' + esc(uey) + '">复制老维文</button>' +
-      '<button type="button" data-cp="' + esc(uly) + '">复制拉丁维文</button>' +
+      '<button type="button" data-cp="' + esc(uey) + '">' + T("copy_uey") + "</button>" +
+      '<button type="button" data-cp="' + esc(uly) + '">' + T("copy_uly") + "</button>" +
       "</div>";
 
     pop.innerHTML = html;
@@ -673,8 +676,8 @@
     if (cpy) {
       var text = cpy.getAttribute("data-copy") + " / " + cpy.getAttribute("data-copy2");
       if (navigator.clipboard) navigator.clipboard.writeText(text);
-      cpy.textContent = "已复制";
-      setTimeout(function () { cpy.textContent = "复制"; }, 900);
+      cpy.textContent = T("btn_copied");
+      setTimeout(function () { cpy.textContent = T("btn_copy"); }, 900);
       return;
     }
     var row = e.target.closest(".row");
@@ -694,8 +697,8 @@
     var cp = e.target.closest("[data-cp]");
     if (cp) {
       if (navigator.clipboard) navigator.clipboard.writeText(cp.getAttribute("data-cp"));
-      cp.textContent = "已复制";
-      setTimeout(function () { cp.textContent = "复制"; }, 900);
+      cp.textContent = T("btn_copied");
+      setTimeout(function () { cp.textContent = T("btn_copy"); }, 900);
     }
   });
 
@@ -767,9 +770,7 @@
     Array.prototype.forEach.call(dirSeg.children, function (x) {
       x.classList.toggle("on", x === b);
     });
-    srcEl.placeholder = dir === "zh2ug"
-      ? "输入汉文，翻译成维吾尔语…"
-      : "输入维吾尔语（老维文 / 拉丁维文），翻译成汉文…";
+    srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
     aiOut.hidden = true;
     aiErr.hidden = true;
   });
@@ -783,25 +784,54 @@
     return "请把以下维吾尔语翻译成简体汉文。只输出汉文译文，不要解释。\n\n" + text;
   }
 
+  var DEFAULT_API = {
+    url: "https://index-translate.bilibili.com/v1/chat/completions",
+    model: "Index-Translate-35B-A3B",
+    key: "EMPTY"
+  };
+
+  function apiConfig() {
+    var cfg = {};
+    try { cfg = JSON.parse(localStorage.getItem("hanug.api") || "{}"); } catch (e) {}
+    return {
+      url: (cfg.url || "").trim() || DEFAULT_API.url,
+      model: (cfg.model || "").trim() || DEFAULT_API.model,
+      key: (cfg.key || "").trim() || DEFAULT_API.key
+    };
+  }
+
+  // 桌面端走主进程（无 CORS），网页/安卓走 fetch
+  function translateRequest(payload) {
+    var cfg = apiConfig();
+    var body = Object.assign({}, payload, { model: cfg.model });
+    var bridge = window.HanUyghurDesktop;
+    if (bridge && bridge.translate) {
+      return bridge.translate({ url: cfg.url, key: cfg.key, body: JSON.stringify(body) }).then(function (txt) {
+        return { ok: true, json: function () { return { choices: [{ message: { content: txt } }] }; } };
+      });
+    }
+    return fetch(cfg.url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + cfg.key
+      },
+      body: JSON.stringify(body)
+    });
+  }
+
   function doTranslate() {
     var text = srcEl.value.trim();
     if (!text) { srcEl.focus(); return; }
     aiErr.hidden = true;
     aiOut.hidden = true;
     goBtn.disabled = true;
-    goBtn.textContent = "翻译中…";
-    fetch("https://index-translate.bilibili.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer EMPTY"
-      },
-      body: JSON.stringify({
-        model: "Index-Translate-35B-A3B",
-        messages: [{ role: "user", content: aiPrompt(text) }],
-        max_tokens: 1600,
-        temperature: 0.2
-      })
+    goBtn.textContent = T("btn_translating");
+    translateRequest({
+      model: "Index-Translate-35B-A3B",
+      messages: [{ role: "user", content: aiPrompt(text) }],
+      max_tokens: 1600,
+      temperature: 0.2
     }).then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();
@@ -827,11 +857,31 @@
       }
       aiOut.hidden = false;
     }).catch(function (err) {
-      aiErr.textContent = "翻译失败：" + (err && err.message ? err.message : "网络错误") + "。请稍后重试。";
+      aiErr.textContent = T("ai_err", { msg: (err && err.message ? err.message : "network error") });
       aiErr.hidden = false;
     }).then(function () {
       goBtn.disabled = false;
-      goBtn.textContent = "翻译";
+      goBtn.textContent = T("btn_translate");
+    });
+  }
+
+  // 接口设置
+  var cfgUrl = $("cfgUrl"), cfgModel = $("cfgModel"), cfgKey = $("cfgKey"), cfgSave = $("cfgSave");
+  if (cfgUrl) {
+    var saved = apiConfig();
+    cfgUrl.value = saved.url === DEFAULT_API.url ? "" : saved.url;
+    cfgModel.value = saved.model === DEFAULT_API.model ? "" : saved.model;
+    cfgKey.value = saved.key === DEFAULT_API.key ? "" : saved.key;
+    cfgSave.addEventListener("click", function () {
+      var cfg = {
+        url: cfgUrl.value.trim(),
+        model: cfgModel.value.trim(),
+        key: cfgKey.value.trim()
+      };
+      try { localStorage.setItem("hanug.api", JSON.stringify(cfg)); } catch (e) {}
+      cfgSave.textContent = T("ai_cfg_saved");
+      setTimeout(function () { cfgSave.textContent = T("ai_cfg_save"); }, 1200);
+      aiErr.hidden = true;
     });
   }
 
@@ -842,13 +892,32 @@
   copyBtn.addEventListener("click", function () {
     if (!lastOut) return;
     if (navigator.clipboard) navigator.clipboard.writeText(lastOut);
-    copyBtn.textContent = "已复制";
-    setTimeout(function () { copyBtn.textContent = "复制"; }, 900);
+    copyBtn.textContent = T("btn_copied");
+    setTimeout(function () { copyBtn.textContent = T("btn_copy"); }, 900);
   });
   aiOut.addEventListener("click", function (e) {
     var t = e.target.closest(".tok");
     if (t) showPop(t);
   });
+
+  // ---------- 语言 ----------
+  var langsEl = $("langs");
+  if (langsEl) {
+    langsEl.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-lang-btn]");
+      if (b && I18N) I18N.setLang(b.getAttribute("data-lang-btn"));
+    });
+  }
+  if (I18N) {
+    I18N.applyStatic();
+    srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
+    I18N.onChange(function () {
+      if (dir) srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
+      goBtn.textContent = goBtn.disabled ? T("btn_translating") : T("btn_translate");
+      renderSearch(qEl.value.trim() ? qEl.value : "");
+      hidePop();
+    });
+  }
 
   // ---------- 初始化 ----------
   var pre = new URLSearchParams(location.search).get("q");

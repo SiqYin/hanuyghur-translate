@@ -61,6 +61,9 @@ def work(batch):
     return batch, [], "batch failed"
 
 
+MAX_FAIL_STREAK = 12
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", default=DEFAULT_SRC)
@@ -90,20 +93,52 @@ def main():
     os.makedirs(os.path.dirname(os.path.join(ROOT, args.out)), exist_ok=True)
     fout = io.open(os.path.join(ROOT, args.out), "a", encoding="utf-8")
     ok = bad = 0
+    streak = 0
+    lane = max(2, args.workers)
     t0 = time.time()
+    it = iter(batches)
+    pending = set()
     with cf.ThreadPoolExecutor(max_workers=args.workers) as ex:
-        futs = [ex.submit(work, b) for b in batches]
-        for i, fu in enumerate(cf.as_completed(futs), 1):
-            batch, out, err = fu.result()
-            if err:
-                bad += len(batch)
-            for r in out:
-                fout.write(json.dumps(r, ensure_ascii=False) + "\n")
-                ok += 1
-            fout.flush()
-            if i % 20 == 0 or i == len(batches):
-                dt = max(1, time.time() - t0)
-                print(f"[{i}/{len(batches)}] ok={ok} bad={bad} {ok/dt:.2f} 句/s", flush=True)
+        def fill():
+            while len(pending) < lane * 2:
+                try:
+                    b = next(it)
+                except StopIteration:
+                    return
+                pending.add(ex.submit(work, b))
+
+        fill()
+        i = 0
+        while pending:
+            finished, _ = cf.wait(pending, return_when=cf.FIRST_COMPLETED)
+            for fu in finished:
+                pending.discard(fu)
+                try:
+                    batch, out, err = fu.result()
+                except Exception:
+                    batch, out, err = [], [], "worker error"
+                i += 1
+                if err:
+                    bad += len(batch)
+                    streak += 1
+                else:
+                    streak = 0
+                    for r in out:
+                        fout.write(json.dumps(r, ensure_ascii=False) + "\n")
+                        ok += 1
+                fout.flush()
+                if i % 20 == 0:
+                    dt = max(1, time.time() - t0)
+                    print(f"[{i}] ok={ok} bad={bad} {ok/dt:.2f} 句/s", flush=True)
+                if streak >= MAX_FAIL_STREAK:
+                    print(f"连续 {streak} 批失败（可能是额度或限流），提前停止", flush=True)
+                    for x in pending:
+                        x.cancel()
+                    pending.clear()
+                    break
+            if streak >= MAX_FAIL_STREAK:
+                break
+            fill()
     fout.close()
     print(f"DONE ok={ok} bad={bad} elapsed={time.time()-t0:.0f}s", flush=True)
 

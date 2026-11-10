@@ -14,7 +14,7 @@ const puppeteer = require("./pptr/node_modules/puppeteer-core");
   await page.setViewport({ width: 1200, height: 1000 });
 
   async function go(q) {
-    await page.goto("http://localhost:5199/?q=" + encodeURIComponent(q) + "&t=" + Date.now(),
+    await page.goto("http://localhost:5200/?q=" + encodeURIComponent(q) + "&t=" + Date.now(),
       { waitUntil: "domcontentloaded", timeout: 60000 });
     await page.waitForSelector(".hero", { timeout: 60000 });
     await new Promise(r => setTimeout(r, 300));

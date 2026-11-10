@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Build APK
+        working-directory: mobile/android
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Rename APK
+        run: |
+          mkdir -p out
+          cp mobile/android/app/build/outputs/apk/debug/app-debug.apk \
+             "out/HanUyghurDict-${GITHUB_REF_NAME#v}-android.apk"
+
+      - name: Upload APK to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in $(seq 1 60); do
+            if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then break; fi
+            sleep 10
+          done
+          gh release upload "$GITHUB_REF_NAME" "out/HanUyghurDict-${GITHUB_REF_NAME#v}-android.apk" --clobber
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install desktop deps
+        working-directory: desktop
+        run: npm install --no-audit --no-fund
+
+      - name: Build Windows zip
+        working-directory: desktop
+        run: npx electron-builder --win zip --x64
+
+      - name: Upload Windows zip to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for ($i = 0; $i -lt 60; $i++) {
+            gh release view "$env:GITHUB_REF_NAME" 2>$null
+            if ($LASTEXITCODE -eq 0) { break }
+            Start-Sleep -Seconds 10
+          }
+          Get-ChildItem dist/*.zip | ForEach-Object {
+            gh release upload "$env:GITHUB_REF_NAME" $_.FullName --clobber
+          }

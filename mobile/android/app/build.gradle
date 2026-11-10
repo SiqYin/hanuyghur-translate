@@ -1,0 +1,49 @@
+plugins { id 'com.android.application' }
+
+def webSrc = file("${rootDir}/../../app")
+def webOut = layout.buildDirectory.dir("generated/web").get().asFile
+
+tasks.register("copyWebAssets", Copy) {
+  from(webSrc)
+  into(new File(webOut, "www"))
+}
+
+android {
+  namespace 'cn.siqyin.hanuyghur'
+  compileSdk 34
+
+  defaultConfig {
+    applicationId "cn.siqyin.hanuyghur"
+    minSdk 23
+    targetSdk 34
+    versionCode 10000
+    versionName "1.0.0"
+  }
+
+  sourceSets {
+    main {
+      assets.srcDirs += [webOut]
+    }
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix ""
+    }
+    release {
+      minifyEnabled false
+      signingConfig signingConfigs.debug
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  packaging {
+    resources.excludes += ['META-INF/*']
+  }
+}
+
+tasks.named("preBuild") { dependsOn("copyWebAssets") }

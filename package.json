@@ -1,17 +1,16 @@
 {
-  "name": "hanug-dict",
-  "version": "0.1.0",
+  "name": "hanuyghur-translate",
+  "version": "1.0.0",
   "private": true,
-  "description": "汉维辞典 — 汉维双向词典，老维文 / 拉丁维文双文字对照",
+  "description": "Hanwen ⇄ Uyghur dictionary with dual-script support, on web, Windows and Android",
+  "homepage": "https://siqyin.github.io/hanuyghur-translate/",
+  "repository": { "type": "git", "url": "https://github.com/SiqYin/hanuyghur-translate.git" },
+  "author": "SiqYin",
+  "license": "MIT",
   "scripts": {
-    "serve": "python -m http.server 5199 --directory app",
+    "serve": "node tools/serve.js 5200 app",
     "test:conv": "node tools/test_ugconv.js",
-    "test:ui": "node tools/ui_test.js",
-    "build:data": "python tools/build_app_data.py",
-    "build:examples": "python tools/build_examples.py",
-    "import": "python tools/import_anatilim.py"
-  },
-  "devDependencies": {
-    "puppeteer-core": "^25.16.0"
+    "build:desktop": "cd desktop && npx electron-builder --win zip --x64",
+    "build:android": "cd mobile/android && gradle assembleDebug"
   }
 }

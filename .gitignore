@@ -5,18 +5,20 @@ app_preview*.png
 shot_*.png
 ui_pop.png
 
-# 原始/清洗/生成数据体积大，不随代码仓库分发；
-# 归档目录本地保留，重建脚本见 README。
+# 源数据与中间产物体积大、且受来源授权约束，不随仓库分发（重建脚本见 README）
 data/raw/
 data/clean/
 data/cache/
-app/data/core.js
-app/data/index.js
-app/data/examples.js
-app/data/examples_core.js
-app/data/examples_chunks/
-app/data/core_words.txt
-app/data/meta.js
-app/data/chunks/
 
-app/data/ug_chunks/
+# 构建产物
+dist/
+desktop/dist/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/local.properties
+*.apk
+*.zip
+
+# 应用数据是发布产物，随仓库分发（GitHub Pages 直接读取）
+# app/data/ 下的文件必须提交

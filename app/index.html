@@ -1,31 +1,44 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-Hans" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f5f0">
 <title>汉维辞典 · خەنزۇچە-ئۇيغۇرچە لۇغەت</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f6e56'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23fffdf8'%3E汉%3C/text%3E%3C/svg%3E">
+<meta name="description" content="汉文 ⇄ 维吾尔语双向词典，老维文与拉丁维文双文字对照，含例句、词形还原与 AI 翻译。">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/logo-192.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brandrow">
+  <div class="topbar">
     <div class="brand">
-      <h1>汉维辞典</h1>
-      <p class="sub"><span lang="ug-Arab" dir="rtl">خەنزۇچە-ئۇيغۇرچە لۇغەت</span> · 双文字对照</p>
+      <img class="logo" src="assets/logo.svg" alt="" width="40" height="40">
+      <div class="brandtext">
+        <h1 data-i18n="brand">汉维辞典</h1>
+        <p class="sub" data-i18n="sub">汉文 ⇄ 维吾尔语 · 双文字对照</p>
+      </div>
     </div>
-    <div class="modes" id="modes" role="group" aria-label="维文显示模式">
-      <button type="button" data-mode="uey">老维文</button>
-      <button type="button" data-mode="uly">拉丁维文</button>
-      <button type="button" data-mode="both" class="on">对照</button>
+    <div class="langs" id="langs" role="group" data-i18n-aria="lang_label">
+      <button type="button" data-lang-btn="zh" class="on" lang="zh-Hans">简中</button>
+      <button type="button" data-lang-btn="en" lang="en">EN</button>
+      <button type="button" data-lang-btn="ug" lang="ug">ئۇيغۇرچە</button>
     </div>
   </div>
 
-  <nav class="tabs" id="tabs" role="tablist" aria-label="功能">
-    <button type="button" class="on" data-view="dict" role="tab">查词</button>
-    <button type="button" data-view="ai" role="tab">翻译</button>
+  <div class="controls">
+  <div class="modes" id="modes" role="group" data-i18n-aria="group_mode">
+    <button type="button" data-mode="uey" data-i18n="mode_uey">老维文</button>
+    <button type="button" data-mode="uly" data-i18n="mode_uly">拉丁维文</button>
+    <button type="button" data-mode="both" class="on" data-i18n="mode_both">对照</button>
+  </div>
+
+  <nav class="tabs" id="tabs" role="tablist" data-i18n-aria="group_tabs">
+    <button type="button" class="on" data-view="dict" role="tab" data-i18n="tab_dict">查词</button>
+    <button type="button" data-view="ai" role="tab" data-i18n="tab_ai">翻译</button>
   </nav>
+  </div>
 
   <div id="dictBar">
     <div class="searchbox">
@@ -33,10 +46,10 @@
         <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>
       </svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false"
-             placeholder="输入汉文词、拼音，或维文…" aria-label="查词">
-      <button id="clear" type="button" aria-label="清除" hidden>×</button>
+             data-i18n-ph="search_ph" data-i18n-aria="tab_dict" placeholder="输入汉文词、拼音，或维文…">
+      <button id="clear" type="button" data-i18n-aria="close" aria-label="清除" hidden>×</button>
     </div>
-    <div class="hint" id="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
+    <div class="hint" id="hint" data-i18n="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
   </div>
 </header>
 
@@ -44,31 +57,42 @@
   <section id="dictView">
     <section id="results" aria-live="polite"></section>
     <section id="empty" class="empty" hidden>
-      <p class="big">没有找到</p>
-      <p class="small">可以换一个说法，或试试单字、拼音。</p>
+      <p class="big" data-i18n="empty_title">没有找到</p>
+      <p class="small" data-i18n="empty_sub">可以换一个说法，或试试单字、拼音。</p>
     </section>
   </section>
 
   <section id="aiView" hidden>
     <div class="ai-panel">
-      <div class="seg" id="dirSeg" role="group" aria-label="翻译方向">
-        <button type="button" class="on" data-dir="zh2ug">汉-维</button>
-        <button type="button" data-dir="ug2zh">维-汉</button>
+      <div class="seg" id="dirSeg" role="group" data-i18n-aria="group_dir">
+        <button type="button" class="on" data-dir="zh2ug" data-i18n="dir_zh2ug">汉-维</button>
+        <button type="button" data-dir="ug2zh" data-i18n="dir_ug2zh">维-汉</button>
       </div>
-      <textarea id="src" rows="5" spellcheck="false" placeholder="输入要翻译的内容…" aria-label="翻译输入"></textarea>
+      <textarea id="src" rows="5" spellcheck="false" data-i18n-ph="src_ph_zh2ug" placeholder="输入汉文，翻译成维吾尔语…"></textarea>
       <div class="ai-bar">
         <span class="cnt" id="srcCount">0</span>
         <span class="spacer"></span>
-        <button type="button" id="go" class="primary">翻译</button>
+        <button type="button" id="go" class="primary" data-i18n="btn_translate">翻译</button>
       </div>
       <div id="aiOut" class="ai-out" hidden>
-        <div class="ai-out-head"><span>译文</span><button type="button" id="copy" class="linky">复制</button></div>
+        <div class="ai-out-head"><span data-i18n="out_title">译文</span><button type="button" id="copy" class="linky" data-i18n="btn_copy">复制</button></div>
         <div id="outUg" class="ug out-ug" hidden></div>
         <div id="outUl" class="ul out-ul" hidden></div>
         <div id="outZh" class="out-zh" hidden></div>
       </div>
       <div id="aiErr" class="ai-err" hidden></div>
-      <p class="ai-note">AI 译文，仅供参考。点击维文词可查词。</p>
+      <p class="ai-note" data-i18n="ai_note">AI 译文，仅供参考。点击维文词可查词。</p>
+      <details class="ai-cfg" id="aiCfg">
+        <summary data-i18n="ai_cfg">接口设置</summary>
+        <p class="cfg-note" data-i18n="ai_cfg_note"></p>
+        <label><span data-i18n="ai_cfg_url">接口地址</span>
+          <input id="cfgUrl" type="url" spellcheck="false" placeholder="https://api.openai.com/v1/chat/completions"></label>
+        <label><span data-i18n="ai_cfg_model">模型</span>
+          <input id="cfgModel" type="text" spellcheck="false" placeholder="Index-Translate-35B-A3B"></label>
+        <label><span data-i18n="ai_cfg_key">密钥</span>
+          <input id="cfgKey" type="password" spellcheck="false" placeholder="sk-..."></label>
+        <button type="button" class="linky" id="cfgSave" data-i18n="ai_cfg_save">保存</button>
+      </details>
     </div>
   </section>
 </main>
@@ -78,9 +102,10 @@
 <footer class="foot">
   <span id="count">正在加载词库…</span>
   <span class="dot">·</span>
-  <span>Anatilim 数据底座 · 双文字引擎</span>
+  <span data-i18n="credit">Anatilim 数据底座 · 双文字引擎</span>
 </footer>
 
+<script src="i18n.js"></script>
 <script src="ugconv.js"></script>
 <script src="morph.js"></script>
 <script src="data/meta.js"></script>

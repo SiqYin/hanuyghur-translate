@@ -52,20 +52,43 @@ body{
   padding:14px 16px 12px;
   backdrop-filter:blur(10px);
 }
-.brandrow{
+.topbar{
   max-width:880px;margin:0 auto;
-  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .logo{
+  width:40px;height:40px;border-radius:11px;flex:none;
+  box-shadow:0 1px 3px rgba(20,26,38,.22);
+}
+.brandtext{min-width:0}
 .brand h1{
-  font-size:22px;font-weight:600;margin:0;letter-spacing:.02em;
+  font-size:21px;font-weight:600;margin:0;letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .brand .sub{
-  margin:3px 0 0;font-size:11.5px;color:var(--muted);letter-spacing:.01em;
+  margin:2px 0 0;font-size:11.5px;color:var(--muted);letter-spacing:.01em;
   font-family:var(--naskh);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.langs{
+  display:flex;gap:1px;background:var(--card-2);border:1px solid var(--line);
+  border-radius:999px;padding:3px;flex:none;
+}
+.langs button{
+  border:0;background:none;color:var(--muted);font-family:var(--kai);
+  font-size:11.5px;padding:5px 9px;border-radius:999px;cursor:pointer;line-height:1.2;
+  transition:background .18s,color .18s;
+}
+.langs button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+.langs button[data-lang-btn="ug"]{font-family:var(--naskh);font-size:13px;padding:3px 10px}
+.controls{
+  max-width:880px;margin:11px auto 0;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
 .modes{
   display:flex;gap:2px;background:var(--card-2);border:1px solid var(--line);
-  border-radius:999px;padding:3px;flex:none;
+  border-radius:999px;padding:3px;width:max-content;flex:none;
 }
 .modes button{
   border:0;background:none;color:var(--muted);font-family:var(--kai);
@@ -99,7 +122,7 @@ body{
 
 /* ---------- tabs ---------- */
 .tabs{
-  max-width:880px;margin:12px auto 0;width:max-content;
+  margin:0;width:max-content;
   display:flex;gap:3px;background:var(--card-2);border:1px solid var(--line);
   border-radius:999px;padding:3px;
 }
@@ -331,3 +354,65 @@ main{max-width:880px;margin:0 auto;padding:14px 16px 30px}
     width:auto;
   }
 }
+
+/* ---------- 维语界面（chrome 区块 RTL；词条内容仍按各自书写方向） ---------- */
+html[data-lang="ug"] .brand h1{
+  font-family:var(--naskh);font-size:19px;line-height:1.9;letter-spacing:0!important;
+}
+html[data-lang="ug"] .brand .sub{letter-spacing:0!important;font-size:12px}
+html[data-lang="ug"] .topbar{direction:rtl}
+html[data-lang="ug"] .hint,
+html[data-lang="ug"] .foot,
+html[data-lang="ug"] .empty,
+html[data-lang="ug"] .section-title,
+html[data-lang="ug"] .ai-note{font-family:var(--naskh);letter-spacing:0!important;line-height:1.9}
+html[data-lang="ug"] .hint{font-size:13px;text-align:right}
+html[data-lang="ug"] .foot{font-size:12px}
+html[data-lang="ug"] .section-title{font-size:13px;text-align:right}
+html[data-lang="ug"] .empty .big{font-family:var(--naskh);font-size:20px;line-height:1.9}
+html[data-lang="ug"] .empty .small{font-family:var(--naskh);font-size:13.5px;line-height:1.9}
+html[data-lang="ug"] .tabs,
+html[data-lang="ug"] .modes,
+html[data-lang="ug"] .seg{direction:rtl}
+html[data-lang="ug"] .tabs button,
+html[data-lang="ug"] .modes button,
+html[data-lang="ug"] .seg button,
+html[data-lang="ug"] .ai-bar .primary,
+html[data-lang="ug"] .ai-note,
+html[data-lang="ug"] .ai-out-head,
+html[data-lang="ug"] .more{font-family:var(--naskh);letter-spacing:0!important;font-size:13px;line-height:1.8}
+html[data-lang="ug"] .ai-panel{direction:rtl}
+html[data-lang="ug"] #src{font-family:var(--naskh);text-align:right;line-height:2}
+html[data-lang="ug"] .ai-out-head .linky{font-family:var(--naskh);margin-left:0;margin-right:auto}
+html[data-lang="ug"] .pop-head{direction:rtl}
+html[data-lang="ug"] .pop-badge,
+html[data-lang="ug"] .pop-note,
+html[data-lang="ug"] .pop-actions button,
+html[data-lang="ug"] .pop-label{font-family:var(--naskh);letter-spacing:0!important;font-size:12px;line-height:1.8}
+html[data-lang="ug"] .pop-x{margin-left:0;margin-right:auto}
+html[data-lang="ug"] .gloss{text-align:right}
+html[data-lang="ug"] .row{text-align:right}
+html[data-lang="ug"] .row .rn{margin-left:0;margin-right:auto}
+html[data-lang="ug"] .sense .num{text-align:left}
+
+@media (max-width:520px){
+  .brand .logo{width:34px;height:34px;border-radius:9px}
+  .brand h1{font-size:18px}
+  .langs button{font-size:10.5px;padding:4px 7px}
+  .langs button[data-lang-btn="ug"]{font-size:11.5px;padding:3px 8px}
+  html[data-lang="ug"] .brand h1{font-size:15px}
+}
+
+/* 自定义接口 */
+.ai-cfg{margin-top:10px;border-top:1px dashed var(--line);padding-top:9px}
+.ai-cfg summary{font-size:11px;color:var(--faint);cursor:pointer;list-style:none}
+.ai-cfg summary::-webkit-details-marker{display:none}
+.ai-cfg summary::before{content:"⚙ ";}
+.cfg-note{font-size:10.5px;color:var(--faint);line-height:1.6;margin:8px 0 10px}
+.ai-cfg label{display:block;margin-bottom:8px;font-size:11px;color:var(--muted)}
+.ai-cfg label span{display:block;margin-bottom:3px}
+.ai-cfg input{
+  width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;
+  font-family:var(--latin);font-size:12px;background:var(--paper);color:var(--ink);outline:none;
+}
+.ai-cfg input:focus{border-color:#cfc4b2}

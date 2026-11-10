@@ -223,7 +223,7 @@ def main():
             "senses": total_senses,
             "core": len(core),
             "ugEntries": ug_entries,
-            "version": "0.1.0",
+            "version": "1.0.0",
             "built": time.strftime("%Y-%m-%d %H:%M:%S"),
             "src": "Anatilim"
         }, ensure_ascii=False) + ";\n")

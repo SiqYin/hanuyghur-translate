@@ -1,0 +1,29 @@
+{
+  "name": "hanuyghur-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "汉维辞典 desktop shell",
+  "main": "main.js",
+  "author": "SiqYin",
+  "license": "MIT",
+  "build": {
+    "appId": "cn.siqyin.hanuyghur",
+    "productName": "HanUyghurDict",
+    "copyright": "Copyright © 2026 SiqYin",
+    "directories": { "output": "../dist", "buildResources": "build" },
+    "files": ["main.js", "package.json"],
+    "extraResources": [{ "from": "../app", "to": "app", "filter": ["**/*"] }],
+    "asar": true,
+    "compression": "normal",
+    "win": {
+      "target": [{ "target": "zip", "arch": ["x64"] }],
+      "icon": "build/icon.png",
+      "artifactName": "HanUyghurDict-${version}-win-${arch}.${ext}"
+    },
+    "linux": { "target": ["AppImage"], "icon": "build/icon.png", "category": "Education" }
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}

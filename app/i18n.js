@@ -1,0 +1,261 @@
+/* 汉维辞典 · 界面三语（简体中文 / English / ئۇيغۇرچە）
+   默认简中；语言选择写入 localStorage；
+   维语界面把 chrome 区块标为 RTL，词条内容仍按各自书写方向渲染。 */
+(function () {
+  "use strict";
+
+  var DICT = {
+    zh: {
+      brand: "汉维辞典",
+      sub: "汉文 ⇄ 维吾尔语 · 双文字对照",
+      mode_uey: "老维文",
+      mode_uly: "拉丁维文",
+      mode_both: "对照",
+      tab_dict: "查词",
+      tab_ai: "翻译",
+      group_mode: "维文显示模式",
+      group_tabs: "功能",
+      group_dir: "翻译方向",
+      search_ph: "输入汉文词、拼音，或维文…",
+      hint: "例：水 / shui / <bdi lang=\"ug-Arab\" dir=\"rtl\">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字",
+      empty_title: "没有找到",
+      empty_sub: "可以换一个说法，或试试单字、拼音。",
+      dir_zh2ug: "汉-维",
+      dir_ug2zh: "维-汉",
+      src_ph_zh2ug: "输入汉文，翻译成维吾尔语…",
+      src_ph_ug2zh: "输入维吾尔语（老维文 / 拉丁维文），翻译成汉文…",
+      btn_translate: "翻译",
+      btn_translating: "翻译中…",
+      out_title: "译文",
+      btn_copy: "复制",
+      btn_copied: "已复制",
+      ai_note: "AI 译文，仅供参考。点击维文词可查词。",
+      ai_cfg: "接口设置",
+      ai_cfg_note: "默认接公共 Index-Translate 网关，可能限流。可填入任意 OpenAI 兼容端点，配置只保存在本机。",
+      ai_cfg_url: "接口地址",
+      ai_cfg_model: "模型",
+      ai_cfg_key: "密钥",
+      ai_cfg_save: "保存",
+      ai_cfg_saved: "已保存",
+      ai_err: "翻译失败：{msg}。请稍后重试。",
+      foot_all: "全库 {n} 词 · {s} 义项 · 例句 {e} 条",
+      foot_core: "全库 {n} 词 · {s} 义项 · {c} 核心词条已载入",
+      foot_found: "找到 {n} 条 · 全库 {m} 词",
+      foot_all_short: "全库 {m} 词",
+      foot_ug: "维语词条 · 全库 {n} 条",
+      badge_senses: "{n} 个义项",
+      more_senses: "展开全部 {n} 个义项",
+      ex_title: "例句",
+      family: "以「{w}」开头",
+      n_senses: "{n} 义",
+      related: "其他相关词",
+      homographs: "同形词条",
+      homographs_more: "另有 {n} 个同形词条",
+      ug_entry_badge: "维语词条",
+      ug_glosses: "汉文释义",
+      lookup_zh: "查汉文 ›",
+      loading: "载入中…",
+      loading_ug: "正在加载维语词库…",
+      not_found_ug: "没有找到维语词条",
+      not_found: "没有找到",
+      pop_uey_badge: "老维文 · 点击查看拉丁",
+      pop_uly_badge: "拉丁维文 · 点击查看老维",
+      pop_entry: "词典对应词条",
+      pop_lemma: "原形",
+      pop_lemma_miss: "原形未在核心词库中找到，可能是专名或长尾词。",
+      pop_miss: "未作为独立词条收录，可能是屈折形式、短语或专名。两种文字已按规则互转。",
+      copy_uey: "复制老维文",
+      copy_uly: "复制拉丁维文",
+      close: "关闭",
+      lang_label: "语言",
+      credit: "Anatilim 数据底座 · 双文字引擎"
+    },
+    en: {
+      brand: "Han–Uyghur Dictionary",
+      sub: "Hanwen ⇄ Uyghur · dual script",
+      mode_uey: "Uyghur Arabic",
+      mode_uly: "Latin",
+      mode_both: "Both",
+      tab_dict: "Dictionary",
+      tab_ai: "Translate",
+      group_mode: "Script display",
+      group_tabs: "Sections",
+      group_dir: "Translation direction",
+      search_ph: "Hanwen, pinyin, or Uyghur…",
+      hint: "e.g. 水 / shui / <bdi lang=\"ug-Arab\" dir=\"rtl\">سۇ</bdi> / su · tap any Uyghur word to see the other script",
+      empty_title: "Not found",
+      empty_sub: "Try another word, a single character, or pinyin.",
+      dir_zh2ug: "Han → Uyghur",
+      dir_ug2zh: "Uyghur → Han",
+      src_ph_zh2ug: "Type Hanwen to translate into Uyghur…",
+      src_ph_ug2zh: "Type Uyghur (Arabic or Latin) to translate into Hanwen…",
+      btn_translate: "Translate",
+      btn_translating: "Translating…",
+      out_title: "Result",
+      btn_copy: "Copy",
+      btn_copied: "Copied",
+      ai_note: "AI output, for reference only. Tap a Uyghur word to look it up.",
+      ai_cfg: "Endpoint",
+      ai_cfg_note: "The public Index-Translate gateway is rate-limited. You can use any OpenAI-compatible endpoint; settings stay on this device.",
+      ai_cfg_url: "Endpoint URL",
+      ai_cfg_model: "Model",
+      ai_cfg_key: "API key",
+      ai_cfg_save: "Save",
+      ai_cfg_saved: "Saved",
+      ai_err: "Translation failed: {msg}. Please try again later.",
+      foot_all: "{n} entries · {s} senses · {e} examples",
+      foot_core: "{n} entries · {s} senses · {c} core entries loaded",
+      foot_found: "{n} results · {m} entries in total",
+      foot_all_short: "{m} entries in total",
+      foot_ug: "Uyghur entry · {n} in total",
+      badge_senses: "{n} senses",
+      more_senses: "Show all {n} senses",
+      ex_title: "Examples",
+      family: "Starting with “{w}”",
+      n_senses: "{n} senses",
+      related: "Related entries",
+      homographs: "Homographs",
+      homographs_more: "{n} more homographs",
+      ug_entry_badge: "Uyghur entry",
+      ug_glosses: "Hanwen glosses",
+      lookup_zh: "Look up ›",
+      loading: "Loading…",
+      loading_ug: "Loading Uyghur lexicon…",
+      not_found_ug: "No Uyghur entry found",
+      not_found: "Not found",
+      pop_uey_badge: "Uyghur Arabic · see Latin",
+      pop_uly_badge: "Latin · see Arabic script",
+      pop_entry: "Dictionary entry",
+      pop_lemma: "Lemma",
+      pop_lemma_miss: "Lemma not in the core lexicon; likely a proper name or a long-tail word.",
+      pop_miss: "Not a headword; may be an inflected form, phrase, or proper name. Both scripts are converted by rule.",
+      copy_uey: "Copy Arabic script",
+      copy_uly: "Copy Latin",
+      close: "Close",
+      lang_label: "Language",
+      credit: "Anatilim data base · dual-script engine"
+    },
+    ug: {
+      brand: "خەنزۇچە-ئۇيغۇرچە لۇغەت",
+      sub: "خەنزۇچە ⇄ ئۇيغۇرچە · ئىككى خىل يېزىق",
+      mode_uey: "ئەرەب يېزىقى",
+      mode_uly: "لاتىن يېزىقى",
+      mode_both: "سېلىشتۇرما",
+      tab_dict: "لۇغەت",
+      tab_ai: "تەرجىمە",
+      group_mode: "يېزىق كۆرسىتىش ھالىتى",
+      group_tabs: "ئىقتىدار",
+      group_dir: "تەرجىمە يۆنىلىشى",
+      search_ph: "خەنزۇچە سۆز، پىنيىن ياكى ئۇيغۇرچە كىرگۈزۈڭ…",
+      hint: "مىسال: سۇ / su · ھەر قانداق ئۇيغۇرچە سۆزنى چېكىپ يەنە بىر خىل يېزىقنى كۆرۈڭ",
+      empty_title: "تېپىلمىدى",
+      empty_sub: "باشقا سۆز، بىر خەت ياكى پىنيىن بىلەن سىناپ بېقىڭ.",
+      dir_zh2ug: "خەنزۇچە-ئۇيغۇرچە",
+      dir_ug2zh: "ئۇيغۇرچە-خەنزۇچە",
+      src_ph_zh2ug: "خەنزۇچە كىرگۈزۈپ ئۇيغۇرچىغا تەرجىمە قىلىڭ…",
+      src_ph_ug2zh: "ئۇيغۇرچە (ئەرەب ياكى لاتىن يېزىقى) كىرگۈزۈپ خەنزۇچىغا تەرجىمە قىلىڭ…",
+      btn_translate: "تەرجىمە",
+      btn_translating: "تەرجىمە قىلىنىۋاتىدۇ…",
+      out_title: "تەرجىمە",
+      btn_copy: "كۆچۈرۈش",
+      btn_copied: "كۆچۈرۈلدى",
+      ai_note: "بۇ سۈنئىي ئەقىل تەرجىمىسى، پەقەت پايدىلىنىش ئۈچۈن. ئۇيغۇرچە سۆزنى چېكىپ لۇغەتتىن ئىزدەڭ.",
+      ai_cfg: "ئىنتېرفېيس تەڭشىكى",
+      ai_cfg_note: "سۈكۈتتىكى ئاممىۋى Index-Translate مۇلازىمېتىرى چەكلىنىشى مۇمكىن. خالىغان OpenAI ماس كېلىدىغان ئۇلىنىشنى تولدۇرسىڭىز بولىدۇ، تەڭشەك پەقەت بۇ ئۈسكۈنىدە ساقلىنىدۇ.",
+      ai_cfg_url: "ئۇلىنىش ئادرېسى",
+      ai_cfg_model: "مودېل",
+      ai_cfg_key: "ئاچقۇچ",
+      ai_cfg_save: "ساقلاش",
+      ai_cfg_saved: "ساقلاندى",
+      ai_err: "تەرجىمە مەغلۇپ بولدى: {msg}. سەل تۇرۇپ قايتا سىناڭ.",
+      foot_all: "جەمئىي {n} سۆز · {s} مەنى · {e} مىسال",
+      foot_core: "جەمئىي {n} سۆز · {s} مەنى · {c} ئاساسىي تېما يۈكلەندى",
+      foot_found: "{n} تەبىقىلدى · جەمئىي {m} سۆز",
+      foot_all_short: "جەمئىي {m} سۆز",
+      foot_ug: "ئۇيغۇرچە تېما · جەمئىي {n} تېما",
+      badge_senses: "{n} مەنى",
+      more_senses: "بارلىق {n} مەنىنى كۆرسىتىش",
+      ex_title: "مىسال",
+      family: "«{w}» بىلەن باشلىنىدىغان سۆزلەر",
+      n_senses: "{n} مەنى",
+      related: "مۇناسىۋەتلىك سۆزلەر",
+      homographs: "ئوخشاش شەكىللىك تېمىلار",
+      homographs_more: "يەنە {n} ئوخشاش شەكىللىك تېما بار",
+      ug_entry_badge: "ئۇيغۇرچە تېما",
+      ug_glosses: "خەنزۇچە ئىزاھات",
+      lookup_zh: "خەنزۇچىدىن ئىزدەش ›",
+      loading: "يۈكلىنىۋاتىدۇ…",
+      loading_ug: "ئۇيغۇرچە لۇغەت يۈكلىنىۋاتىدۇ…",
+      not_found_ug: "ئۇيغۇرچە تېما تېپىلمىدى",
+      not_found: "تېپىلمىدى",
+      pop_uey_badge: "ئەرەب يېزىقى · لاتىن يېزىقىنى كۆرۈش",
+      pop_uly_badge: "لاتىن يېزىقى · ئەرەب يېزىقىنى كۆرۈش",
+      pop_entry: "لۇغەتتىكى ماس تېما",
+      pop_lemma: "ئاساس شەكىل",
+      pop_lemma_miss: "ئاساس شەكىل ئاساسىي لۇغەتتە تېپىلمىدى، ئېھتىمال ئاتالغۇ ياكى ئۇزۇن قۇيرۇق سۆز.",
+      pop_miss: "مۇستەقىل تېما سۈپىتىدە كىرگۈزۈلمىگەن، ئېھتىمال تۇلۇقسىز شەكىل، ئىبارە ياكى ئاتالغۇ. ئىككى خىل يېزىق قائىدە بويىچە ئالماشتۇرۇلدى.",
+      copy_uey: "ئەرەب يېزىقىنى كۆچۈرۈش",
+      copy_uly: "لاتىن يېزىقىنى كۆچۈرۈش",
+      close: "تاقاش",
+      lang_label: "تىل",
+      credit: "Anatilim سانلىق ئاساسى · ئىككى خىل يېزىق ماتورى"
+    }
+  };
+
+  var TITLE = {
+    zh: "汉维辞典 · خەنزۇچە-ئۇيغۇرچە لۇغەت",
+    en: "Han–Uyghur Dictionary · خەنزۇچە-ئۇيغۇرچە لۇغەت",
+    ug: "خەنزۇچە-ئۇيغۇرچە لۇغەت · 汉维辞典"
+  };
+  var HTML_LANG = { zh: "zh-Hans", en: "en", ug: "ug" };
+
+  var lang = "zh";
+  try { lang = localStorage.getItem("hanug.lang") || "zh"; } catch (e) {}
+  if (!DICT[lang]) lang = "zh";
+
+  var listeners = [];
+
+  function t(key, vars) {
+    var s = (DICT[lang] && DICT[lang][key]) || (DICT.zh[key] || key);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) {
+        s = s.split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return s;
+  }
+
+  function applyStatic() {
+    document.documentElement.lang = HTML_LANG[lang];
+    document.documentElement.setAttribute("data-lang", lang);
+    document.title = TITLE[lang];
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i18n]"), function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (k === "hint") el.innerHTML = t(k);
+      else el.textContent = t(k);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i18n-ph]"), function (el) {
+      el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i18n-aria]"), function (el) {
+      el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lang-btn]"), function (b) {
+      b.classList.toggle("on", b.getAttribute("data-lang-btn") === lang);
+    });
+    document.body.classList.toggle("lang-ug", lang === "ug");
+  }
+
+  function setLang(next) {
+    if (!DICT[next] || next === lang) return;
+    lang = next;
+    try { localStorage.setItem("hanug.lang", next); } catch (e) {}
+    applyStatic();
+    listeners.forEach(function (f) { try { f(next); } catch (e) {} });
+  }
+
+  function onChange(f) { listeners.push(f); }
+
+  window.I18N = { t: t, setLang: setLang, applyStatic: applyStatic, onChange: onChange, get lang() { return lang; }, dict: DICT };
+})();
