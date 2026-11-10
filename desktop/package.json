@@ -11,7 +11,7 @@
     "productName": "HanUyghurDict",
     "copyright": "Copyright © 2026 SiqYin",
     "directories": { "output": "../dist", "buildResources": "build" },
-    "files": ["main.js", "package.json"],
+    "files": ["main.js", "preload.js", "package.json"],
     "extraResources": [{ "from": "../app", "to": "app", "filter": ["**/*"] }],
     "asar": true,
     "compression": "normal",
