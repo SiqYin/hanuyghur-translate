@@ -557,7 +557,16 @@
     var morph = null, morphHit = null;
     if (!hit && MORPH) {
       morph = MORPH.analyze(uey);
-      if (morph) morphHit = lemmaGloss.get(morph.lemma);
+      if (morph) {
+        morphHit = lemmaGloss.get(morph.lemma);
+        // 优先用当前词条自己的汉文对应，避免「叫」被解释成「招」
+        var hero = el.closest(".hero");
+        var hz = hero && hero.querySelector(".zh") ? hero.querySelector(".zh").textContent : "";
+        var ce = hz ? coreMap.get(hz) : null;
+        if (ce && (ce[2] || []).some(function (x) { return UG.normalizeUey(x[0]) === morph.lemma; })) {
+          morphHit = { zh: hz, py: ce[1] };
+        }
+      }
     }
 
     var html = '<div class="pop-head"><span class="pop-badge">' +

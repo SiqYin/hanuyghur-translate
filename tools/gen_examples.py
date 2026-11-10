@@ -97,7 +97,7 @@ def translate(sentences):
         got = None
         for attempt in range(3):
             try:
-                lines = lines_of(call(p, max_tokens=2200 if TR_CHUNK >= 12 else 800))
+                lines = lines_of(call(p, max_tokens=4000 if TR_CHUNK >= 24 else (2200 if TR_CHUNK >= 12 else 800)))
                 if len(lines) == len(chunk):
                     got = lines
                     break
