@@ -37,6 +37,16 @@ pos 取值：n / v / adj / adv / num / pron / conj / postp / intj
 待处理词："""
 
 
+
+# 只允许免费网关；付费接口必须显式授权，避免误用个人额度
+PAID_HOSTS = ("deepseek.com", "openai.com", "anthropic.com", "moonshot.cn", "bigmodel.cn", "dashscope.aliyuncs.com")
+if any(h in API for h in PAID_HOSTS) and os.environ.get("ALLOW_PAID_API") != "1":
+    raise SystemExit(
+        "拒绝启动：检测到付费 API 端点 %s\n"
+        "本项目默认只使用免费的 Index-Translate 公共网关。\n"
+        "如确需使用付费接口，请显式设置 ALLOW_PAID_API=1。" % API
+    )
+
 def norm_space(s):
     return re.sub(r"\s+", " ", str(s or "")).strip()
 

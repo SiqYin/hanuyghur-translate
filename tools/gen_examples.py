@@ -23,6 +23,15 @@ API = os.environ.get("UG_API_BASE", "https://index-translate.bilibili.com/v1").r
 MODEL = os.environ.get("UG_API_MODEL", "Index-Translate-35B-A3B")
 KEY = os.environ.get("UG_API_KEY", "EMPTY")
 TR_CHUNK = int(os.environ.get("UG_TR_CHUNK", "4"))
+# 只允许免费网关；付费接口必须显式授权，避免误用个人额度
+PAID_HOSTS = ("deepseek.com", "openai.com", "anthropic.com", "moonshot.cn", "bigmodel.cn", "dashscope.aliyuncs.com")
+if any(h in API for h in PAID_HOSTS) and os.environ.get("ALLOW_PAID_API") != "1":
+    raise SystemExit(
+        "拒绝启动：检测到付费 API 端点 %s\n"
+        "本项目默认只使用免费的 Index-Translate 公共网关。\n"
+        "如确需使用付费接口，请显式设置 ALLOW_PAID_API=1。" % API
+    )
+
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 

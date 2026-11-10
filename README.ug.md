@@ -94,7 +94,7 @@
 |---|---|---|
 | [Anatilim خەنزۇچە-ئۇيغۇرچە لۇغەت](https://github.com/xhacker/chinese-uyghur) | لۇغەت ئاساسى، ئىككى يېزىق قۇربىقۇر ماسلاشتۇرۇلغان | ئامباردا ئېنىق ئىجازەت يوق، شەخسىي ئۆگىنىش/تەكشۈرۈش ئۈچۈن، [NOTICE.md](NOTICE.md) نى كۆرۈڭ |
 | خەننەن لۇغىتى `examples.json` | مىساللارنىڭ خەنزۇچە تەرىپى (114,385 جۈملە) | ئۆز كورپۇسىمىز، پەقەت خەنزۇچە تەرىپى ئىشلىتىلدى |
-| AI تەرجىمە (Index-Translate / DeepSeek) | مىساللارنىڭ ئۇيغۇرچە تەرىپى، AI ئىقتىدارى | ھاسىل قىلىنغان مەزمۇن، ئانا تىل تەكشۈرۈشى زۆرۈر |
+| AI تەرجىمە (Index-Translate ئاممىۋى مۇلازىمېتىرى) | مىساللارنىڭ ئۇيغۇرچە تەرىپى، AI ئىقتىدارى | ھاسىل قىلىنغان مەزمۇن، ئانا تىل تەكشۈرۈشى زۆرۈر |
 
 - كود MIT ئىجازىتى بىلەن تارقىتىلىدۇ؛ **لۇغەت سانلىقى MIT گە كىرمەيدۇ**، ھوقۇق ئەسلى تەمىنلىگۈچىگە تەۋە.
 - ئەگەر ھوقۇق ئىگىسى بۇ ئامبارنىڭ ئىشلىتىلىشى ئىجازەتتىن ئېشىپ كەتتى دەپ قارىسا، issue ئېچىڭ، بىز مۇناسىۋەتلىك سانلىقنى ئۆچۈرىمىز ياكى ئىجازەت بويىچە قايتا قۇرىمىز.
@@ -136,5 +136,5 @@ cd mobile/android && gradle assembleDebug
 
 - لۇغەت: [Anatilim](https://github.com/xhacker/chinese-uyghur)
 - خەت نۇسخىسى: [LXGW WenKai](https://github.com/lxgw/LxgwWenKai)، [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) (SIL OFL 1.1)
-- تەرجىمە مودېلى: [Index-Translate](https://github.com/bilibili/Index-Translate)، [DeepSeek](https://www.deepseek.com/)
+- تەرجىمە مودېلى: [Index-Translate](https://github.com/bilibili/Index-Translate) (ھەقسىز ئاممىۋى مۇلازىمەت)
 - قېرىنداش تۈر: [خەننەن لۇغىتى](https://github.com/SiqYin/zhongviet-translate)

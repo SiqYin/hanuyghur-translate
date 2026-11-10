@@ -13,7 +13,7 @@
 | 汉维词库（328,900 词头 / 532,192 义项） | [Anatilim 汉维双向词典](https://github.com/xhacker/chinese-uyghur)，原仓库 `xhacker/chinese-uyghur` | 原仓库未附明确的开源许可证。本项目按“个人学习 / 研究”定位使用，**未主张任何权利**。 |
 | 维汉词库（371,784 词头） | 由上述汉维数据反演生成 | 同上 |
 | 例句汉文侧（114,385 条） | 汉南辞典项目语料 `examples.json` | 本项目自有语料，仅复用汉文侧 |
-| 例句维文侧 | AI 翻译（Index-Translate / DeepSeek） | 生成内容，未经母语审校 |
+| 例句维文侧 | AI 批量翻译（Index-Translate 公共网关） | 生成内容，未经母语审校 |
 
 ## 3. 使用边界
 

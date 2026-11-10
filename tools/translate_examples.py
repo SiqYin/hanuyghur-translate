@@ -19,6 +19,8 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import gen_examples as G
+if 'deepseek' in G.API and os.environ.get('ALLOW_PAID_API') != '1':
+    raise SystemExit('拒绝启动：付费端点需要 ALLOW_PAID_API=1')
 
 DEFAULT_SRC = r"D:/项目上下文归档/2026-11-7 汉南辞典/02_数据管线/产出/examples.json"
 

@@ -94,7 +94,7 @@ These links always point at the latest release; older builds are under [Releases
 |---|---|---|
 | [Anatilim Chinese–Uyghur dictionary](https://github.com/xhacker/chinese-uyghur) (`xhacker/chinese-uyghur`) | Main lexicon, both scripts aligned line by line | No explicit licence in the repository; treated as personal study/research use. See [NOTICE.md](NOTICE.md) |
 | Hannan dictionary `examples.json` | Hanwen side of the examples (114,385 sentences) | Our own corpus; only the Hanwen side is reused |
-| AI translation (Index-Translate / DeepSeek) | Uyghur side of examples, AI feature | Generated content, needs native review |
+| AI translation (public Index-Translate gateway) | Uyghur side of examples, AI feature | Generated content, needs native review |
 
 - Code is MIT licensed. **The dictionary data is not covered by MIT**; rights stay with the original providers.
 - If a rights holder believes this repository exceeds their licence, please open an issue and we will remove the data or rebuild it under a proper licence.
@@ -136,5 +136,5 @@ cd mobile/android && gradle assembleDebug
 
 - Lexicon: [Anatilim](https://github.com/xhacker/chinese-uyghur)
 - Fonts: [LXGW WenKai](https://github.com/lxgw/LxgwWenKai), [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) (both SIL OFL 1.1)
-- Translation models: [Index-Translate](https://github.com/bilibili/Index-Translate), [DeepSeek](https://www.deepseek.com/)
+- Translation model: [Index-Translate](https://github.com/bilibili/Index-Translate) (free public gateway)
 - Sister project: [Hannan Dictionary](https://github.com/SiqYin/zhongviet-translate)

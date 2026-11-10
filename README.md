@@ -94,7 +94,7 @@
 |---|---|---|
 | [Anatilim 汉维双向词典](https://github.com/xhacker/chinese-uyghur)（`xhacker/chinese-uyghur`） | 词库主体，双文字逐行对齐 | 仓库未附明确许可证，按“个人学习/研究”定位使用，详见 [NOTICE.md](NOTICE.md) |
 | 汉南辞典 `examples.json` | 例句的汉文侧（114,385 条） | 本项目自有语料，仅复用汉文侧 |
-| AI 翻译（Index-Translate / DeepSeek） | 例句维文、AI 翻译功能 | 生成内容，需母语审校 |
+| AI 翻译（Index-Translate 公共网关） | 例句维文、AI 翻译功能 | 生成内容，需母语审校 |
 
 - 代码以 MIT 发布；**词典数据不适用 MIT**，权利归原始数据提供方。
 - 若权利人认为本仓库的使用超出许可，请开 issue，我们会移除相关数据或按授权重建。
@@ -136,5 +136,5 @@ cd mobile/android && gradle assembleDebug
 
 - 词库：[Anatilim](https://github.com/xhacker/chinese-uyghur)
 - 字体：[霞鹜文楷 LXGW WenKai](https://github.com/lxgw/LxgwWenKai)、[Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic)（均为 SIL OFL 1.1）
-- 翻译模型：[Index-Translate](https://github.com/bilibili/Index-Translate)、[DeepSeek](https://www.deepseek.com/)
+- 翻译模型：[Index-Translate](https://github.com/bilibili/Index-Translate)（免费公共网关）
 - 姊妹项目：[汉南辞典](https://github.com/SiqYin/zhongviet-translate)
