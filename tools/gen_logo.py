@@ -32,7 +32,7 @@ def svg(rounded=True, bg=True):
 </linearGradient>
 </defs>
 {rect}
-<g fill="#FFFFFF" transform="translate(256 256) scale(1.05) translate(-256 -256)">{petals}</g>
+<g fill="#FFFFFF" transform="translate(256 256) scale(0.92) translate(-256 -256)">{petals}</g>
 </svg>
 """
 
