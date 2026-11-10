@@ -3,8 +3,8 @@
 """
 gen_lexicon.py — 汉维词库生成管线
 
-输入：中文词表 TSV（HSK 或现代汉语词频表）
-输出：JSONL，一行一个中文词条
+输入：汉文词表 TSV（HSK 或现代汉语词频表）
+输出：JSONL，一行一个汉文词条
 特性：批量、并发、缓存、断点续跑、JSON 容错、正字法校验
 """
 import argparse
@@ -25,7 +25,7 @@ API_KEY = os.environ.get("UG_API_KEY", "EMPTY")
 AR_LETTER = re.compile(r"^[\u0621-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06AD\u06BE\u06C6-\u06D0\u06CB\s\-'’]+$")
 CJK = re.compile(r"[\u3400-\u4DBF\u4E00-\u9FFF]")
 
-PROMPT_HEAD = """你是维吾尔语词典编辑。为下列中文词给出维吾尔语最常用对应词。
+PROMPT_HEAD = """你是维吾尔语词典编辑。为下列汉文词给出维吾尔语最常用对应词。
 要求：
 1. 老维文（ئۇيغۇر ئەرەب يېزىقى），2009 标准正字法，字母必须正确（ڭ ۇ ۆ ۈ ۋ ې ھ ە ى ئ）。
 2. 动词用 -ماق/-مەك 不定式；名词用主格单数；形容词用原级。

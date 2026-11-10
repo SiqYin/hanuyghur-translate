@@ -33,7 +33,7 @@
         <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>
       </svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false"
-             placeholder="输入中文词、拼音，或维文…" aria-label="查词">
+             placeholder="输入汉文词、拼音，或维文…" aria-label="查词">
       <button id="clear" type="button" aria-label="清除" hidden>×</button>
     </div>
     <div class="hint" id="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
@@ -52,8 +52,8 @@
   <section id="aiView" hidden>
     <div class="ai-panel">
       <div class="seg" id="dirSeg" role="group" aria-label="翻译方向">
-        <button type="button" class="on" data-dir="zh2ug">中 → 维</button>
-        <button type="button" data-dir="ug2zh">维 → 中</button>
+        <button type="button" class="on" data-dir="zh2ug">汉-维</button>
+        <button type="button" data-dir="ug2zh">维-汉</button>
       </div>
       <textarea id="src" rows="5" spellcheck="false" placeholder="输入要翻译的内容…" aria-label="翻译输入"></textarea>
       <div class="ai-bar">
@@ -85,7 +85,7 @@
 <script src="morph.js"></script>
 <script src="data/meta.js"></script>
 <script src="data/core.js"></script>
-<script src="data/examples.js"></script>
+<script src="data/examples_core.js"></script>
 <script src="data/index.js"></script>
 <script src="app.js"></script>
 </body>

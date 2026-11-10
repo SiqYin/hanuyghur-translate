@@ -15,6 +15,7 @@
   var ulMap = new Map();
   var byFirst = new Map();
   var chunkCache = {};
+  var EX_CHUNKS = {};
   var ugMap = new Map();
   var ugChunkCache = {};
   var ugIndexLoaded = false, ugIndexLoading = false, ugWaiters = [];
@@ -65,7 +66,7 @@
       if (!senseMap.has(k)) senseMap.set(k, { zh: e[0], py: e[1], uey: s[0], uly: s[1] });
       var w = UG.normalizeUey(s[0]);
       if (w) {
-        // 同一维语词可能出现在多个中文词条下；优先「首义项 + 短中文词」
+        // 同一维语词可能出现在多个汉文词条下；优先「首义项 + 短汉文词」
         var sc = (si === 0 ? 10 : 0) + (e[0].length <= 2 ? 5 : 0) + (e[0].length === 1 ? 2 : 0);
         var prev = lemmaGloss.get(w);
         if (!prev || sc > prev.sc) {
@@ -101,6 +102,25 @@
       cb(null, arr);
     };
     s.onerror = function () { cb(new Error("chunk load failed")); };
+    document.head.appendChild(s);
+  }
+
+  function exBucket(zh) {
+    var h = 0;
+    for (var i = 0; i < zh.length; i++) h = (h * 31 + zh.charCodeAt(i)) >>> 0;
+    return h % 64;
+  }
+
+  function loadExChunk(b, cb) {
+    var name = "b" + String(b).padStart(2, "0");
+    if (EX_CHUNKS[name]) return cb();
+    var s = document.createElement("script");
+    s.src = "data/examples_chunks/" + name + ".js";
+    s.onload = function () {
+      EX_CHUNKS[name] = (window.EX_CHUNKS || {})[name] || {};
+      cb();
+    };
+    s.onerror = function () { EX_CHUNKS[name] = {}; cb(); };
     document.head.appendChild(s);
   }
 
@@ -155,7 +175,7 @@
     // 1) 维语拉丁精确匹配优先（"su" 先给 水，而不是拼音 素）
     if (k && ulMap.has(k)) ulMap.get(k).forEach(push);
 
-    // 2) 中文拼音精确匹配
+    // 2) 汉文拼音精确匹配
     var pk = foldPy(q);
     if (pk && pyMap.has(pk)) pyMap.get(pk).forEach(push);
 
@@ -219,6 +239,7 @@
       h += '<button type="button" class="more" data-expand="1">展开全部 ' + senses.length + " 个义项</button>";
     }
     h += exampleHtml(zh);
+    if (!EXAMPLES[zh]) h += '<div class="ex-slot" data-zh="' + esc(zh) + '"></div>';
     h += familyHtml(zh);
     h += "</article>";
     return h;
@@ -239,8 +260,8 @@
     }).join("");
   }
 
-  function exampleHtml(zh) {
-    var arr = EXAMPLES[zh];
+  function exampleHtml(zh, arr) {
+    arr = arr || EXAMPLES[zh];
     if (!arr || !arr.length) return "";
     var h = '<div class="section-title">例句</div>';
     arr.forEach(function (e) {
@@ -251,6 +272,20 @@
         "</div>";
     });
     return h;
+  }
+
+  // 长尾例句：按词头哈希加载分片，填充占位
+  function hydrateExamples() {
+    document.querySelectorAll(".ex-slot").forEach(function (slot) {
+      var zh = slot.getAttribute("data-zh");
+      if (!zh) return;
+      if (EXAMPLES[zh]) { slot.innerHTML = exampleHtml(zh); return; }
+      var b = exBucket(zh);
+      loadExChunk(b, function () {
+        var arr = (EX_CHUNKS["b" + String(b).padStart(2, "0")] || {})[zh];
+        if (arr && arr.length) slot.innerHTML = exampleHtml(zh, arr);
+      });
+    });
   }
 
   function familyHtml(zh) {
@@ -292,7 +327,7 @@
       '<span class="arrow">›</span></button>';
   }
 
-  // ---------- 维→中：索引懒加载 ----------
+  // ---------- 维-汉：索引懒加载 ----------
   function loadUgIndex(cb) {
     if (ugIndexLoaded) return cb(null);
     if (ugIndexLoading) { ugWaiters.push(cb); return; }
@@ -365,11 +400,11 @@
       esc(uey) + '" data-uly="' + esc(uly) + '">' + esc(uey) + "</div>" +
       '<div class="badge">维语词条</div></div>';
     h += '<div class="ul big-ul" lang="ug-Latn" dir="ltr">' + esc(uly) + "</div>";
-    h += '<div class="section-title">中文释义</div><div class="gloss-list">';
+    h += '<div class="section-title">汉文释义</div><div class="gloss-list">';
     zh.forEach(function (z) {
       var cn = (z.split(/\s+/)[0] || z);
       h += '<button type="button" class="gloss" data-zh="' + esc(cn) + '">' +
-        '<span class="gz">' + esc(z) + '</span><span class="ga">查中文 ›</span></button>';
+        '<span class="gz">' + esc(z) + '</span><span class="ga">查汉文 ›</span></button>';
     });
     h += "</div></article>";
     return h;
@@ -459,7 +494,7 @@
           if (err || !arr || !arr[hero.i]) return;
           var card = heroHtml(arr[hero.i]);
           var cur = document.getElementById("pendingHero");
-          if (cur) cur.outerHTML = card;
+          if (cur) { cur.outerHTML = card; hydrateExamples(); }
         });
       }
     }
@@ -483,6 +518,7 @@
     }
 
     resultsEl.innerHTML = html;
+    hydrateExamples();
     emptyEl.hidden = !!(hero || more.length);
     var n = (hero ? 1 : 0) + more.length;
     countEl.textContent = n ? "找到 " + n + " 条 · 全库 " + (META.entries || 0).toLocaleString() + " 词" :
@@ -494,6 +530,7 @@
     if (coreMap.has(zh)) {
       resultsEl.innerHTML = heroHtml(coreMap.get(zh));
       resultsEl.className = "mode-" + mode;
+      hydrateExamples();
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -502,6 +539,7 @@
       if (err || !arr || !arr[i]) return;
       resultsEl.innerHTML = heroHtml(arr[i]);
       resultsEl.className = "mode-" + mode;
+      hydrateExamples();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
@@ -720,8 +758,8 @@
       x.classList.toggle("on", x === b);
     });
     srcEl.placeholder = dir === "zh2ug"
-      ? "输入中文，翻译成维吾尔语…"
-      : "输入维吾尔语（老维文 / 拉丁维文），翻译成中文…";
+      ? "输入汉文，翻译成维吾尔语…"
+      : "输入维吾尔语（老维文 / 拉丁维文），翻译成汉文…";
     aiOut.hidden = true;
     aiErr.hidden = true;
   });
@@ -730,9 +768,9 @@
 
   function aiPrompt(text) {
     if (dir === "zh2ug") {
-      return "请把以下中文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），2009 标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉语/中文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
+      return "请把以下汉文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），2009 标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉语/汉文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
     }
-    return "请把以下维吾尔语翻译成简体中文。只输出中文译文，不要解释。\n\n" + text;
+    return "请把以下维吾尔语翻译成简体汉文。只输出汉文译文，不要解释。\n\n" + text;
   }
 
   function doTranslate() {

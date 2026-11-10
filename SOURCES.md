@@ -6,7 +6,7 @@
 
 | 来源 | 文件 | 规模 | 许可 | 用途 |
 |---|---|---|---|---|
-| Anatilim Uyghur ↔ Chinese Dictionary（via `xhacker/chinese-uyghur`） | `ChineseUyghurStarDict.txt`（UEY）<br>`ChineseUyghurStarDict_CnUy_ULY.txt`（ULY）<br>`ChineseUyghurStarDict_UyCn.txt`（UEY）<br>`ChineseUyghurStarDict_UyCn_ULY.txt`（ULY） | 中→维 328,902 行<br>维→中 385,502 行 | **未附明确开源许可**（原始来源 anatilim.com） | 词库底座 |
+| Anatilim Uyghur ↔ Chinese Dictionary（via `xhacker/chinese-uyghur`） | `ChineseUyghurStarDict.txt`（UEY）<br>`ChineseUyghurStarDict_CnUy_ULY.txt`（ULY）<br>`ChineseUyghurStarDict_UyCn.txt`（UEY）<br>`ChineseUyghurStarDict_UyCn_ULY.txt`（ULY） | 汉-维 328,902 行<br>维-汉 385,502 行 | **未附明确开源许可**（原始来源 anatilim.com） | 词库底座 |
 | 现代汉语常用词表 | `modern_chinese_words.tsv` | 56,790 词（带频序/拼音） | 项目内使用，来源待补 | 排序/选词 |
 | HSK 词表 | `hsk_all.tsv` | 4,997 词 | 项目内使用 | 核心层 |
 
@@ -27,7 +27,7 @@
 
 | 字体 | 文件 | 许可 | 说明 |
 |---|---|---|---|
-| 霞鹜文楷 LXGW WenKai | `app/fonts/wenkai.woff2` | SIL OFL 1.1 | 中文字体 |
+| 霞鹜文楷 LXGW WenKai | `app/fonts/wenkai.woff2` | SIL OFL 1.1 | 汉文字体 |
 | Noto Naskh Arabic | `app/fonts/naskh-400.woff2` | SIL OFL 1.1 | 老维文正文；Google Fonts 阿拉伯子集 |
 | UKIJ 系列 | 未打包 | 条款不清晰 | 仅在系统已安装时作为回退 |
 

@@ -13,6 +13,9 @@ data/cache/
 app/data/core.js
 app/data/index.js
 app/data/examples.js
+app/data/examples_core.js
+app/data/examples_chunks/
+app/data/core_words.txt
 app/data/meta.js
 app/data/chunks/
 

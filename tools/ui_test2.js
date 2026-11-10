@@ -29,7 +29,8 @@ const puppeteer = require("./pptr/node_modules/puppeteer-core");
     ex: document.querySelectorAll(".ex").length
   })));
 
-  // 例句屈折词点击
+  // 例句屈折词点击（用「叫」的例句：چاقىردى -> چاقىرماق）
+  await go("叫");
   const toks = await page.$$(".ex-ug .tok");
   if (toks.length) {
     await toks[toks.length - 1].click();

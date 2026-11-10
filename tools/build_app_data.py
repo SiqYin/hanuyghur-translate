@@ -72,7 +72,7 @@ def norm_uey(s):
 
 
 def load_reverse():
-    """维->中 反查表：维语词 -> 中文释义串，用于义项排序。"""
+    """维->中 反查表：维语词 -> 汉文释义串，用于义项排序。"""
     rev = {}
     p = os.path.join(CLEAN, "ug_zh.jsonl")
     with io.open(p, encoding="utf-8") as f:
@@ -237,6 +237,10 @@ def main():
             f.write(json.dumps(compact(r), ensure_ascii=False, separators=(",", ":")))
         f.write("];\n")
     print("core.js MB", round(os.path.getsize(os.path.join(APP_DATA, "core.js")) / 1048576, 2))
+
+    with io.open(os.path.join(APP_DATA, "core_words.txt"), "w", encoding="utf-8") as f:
+        for r in core:
+            f.write(r["zh"] + "\n")
 
     # index
     with io.open(os.path.join(APP_DATA, "index.js"), "w", encoding="utf-8") as f:

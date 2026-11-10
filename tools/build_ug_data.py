@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""build_ug_data.py — 编译维→中反向词库（索引 + 64 分片）"""
+"""build_ug_data.py — 编译维-汉反向词库（索引 + 64 分片）"""
 import hashlib
 import io
 import json

@@ -80,7 +80,7 @@ def import_zh_ug():
                 continue
             if not AR.search(u) or not LAT.search(l):
                 continue
-            # 去掉中文残留（个别条目混入）
+            # 去掉汉文残留（个别条目混入）
             if CJK.search(u):
                 continue
             senses.append([u, l])
@@ -122,7 +122,7 @@ def import_ug_zh():
             continue
         if not uly or not LAT.search(uly):
             continue
-        # 逐行配对；头部不一致时用中文释义做弱校验，仍保留
+        # 逐行配对；头部不一致时用汉文释义做弱校验，仍保留
         if clean(hb) != clean(ha):
             mismatch += 1
 
