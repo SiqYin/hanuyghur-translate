@@ -678,6 +678,130 @@
   });
   setMode(mode);
 
+  // ---------- 翻译 ----------
+  var tabs = $("tabs");
+  var dictView = $("dictView");
+  var aiView = $("aiView");
+  var dictBar = $("dictBar");
+  var srcEl = $("src");
+  var srcCount = $("srcCount");
+  var goBtn = $("go");
+  var aiOut = $("aiOut");
+  var outUg = $("outUg");
+  var outUl = $("outUl");
+  var outZh = $("outZh");
+  var aiErr = $("aiErr");
+  var dirSeg = $("dirSeg");
+  var copyBtn = $("copy");
+  var dir = "zh2ug";
+  var lastOut = "";
+
+  function switchView(v) {
+    var isAi = v === "ai";
+    dictView.hidden = isAi;
+    aiView.hidden = !isAi;
+    dictBar.hidden = isAi;
+    Array.prototype.forEach.call(tabs.children, function (b) {
+      b.classList.toggle("on", b.getAttribute("data-view") === v);
+    });
+    if (isAi) srcEl.focus();
+  }
+
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-view]");
+    if (b) switchView(b.getAttribute("data-view"));
+  });
+
+  dirSeg.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-dir]");
+    if (!b) return;
+    dir = b.getAttribute("data-dir");
+    Array.prototype.forEach.call(dirSeg.children, function (x) {
+      x.classList.toggle("on", x === b);
+    });
+    srcEl.placeholder = dir === "zh2ug"
+      ? "输入中文，翻译成维吾尔语…"
+      : "输入维吾尔语（老维文 / 拉丁维文），翻译成中文…";
+    aiOut.hidden = true;
+    aiErr.hidden = true;
+  });
+
+  srcEl.addEventListener("input", function () { srcCount.textContent = srcEl.value.length; });
+
+  function aiPrompt(text) {
+    if (dir === "zh2ug") {
+      return "请把以下中文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），2009 标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉语/中文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
+    }
+    return "请把以下维吾尔语翻译成简体中文。只输出中文译文，不要解释。\n\n" + text;
+  }
+
+  function doTranslate() {
+    var text = srcEl.value.trim();
+    if (!text) { srcEl.focus(); return; }
+    aiErr.hidden = true;
+    aiOut.hidden = true;
+    goBtn.disabled = true;
+    goBtn.textContent = "翻译中…";
+    fetch("https://index-translate.bilibili.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer EMPTY"
+      },
+      body: JSON.stringify({
+        model: "Index-Translate-35B-A3B",
+        messages: [{ role: "user", content: aiPrompt(text) }],
+        max_tokens: 1600,
+        temperature: 0.2
+      })
+    }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(function (d) {
+      var out = (d.choices && d.choices[0] && d.choices[0].message &&
+        d.choices[0].message.content || "").trim();
+      if (!out) throw new Error("空译文");
+      if (dir === "zh2ug") {
+        var uey = UG.normalizeUey(out);
+        var uly = UG.uey2ul(uey);
+        outUg.innerHTML = ueyTokens(uey);
+        outUl.textContent = uly;
+        outUg.hidden = false;
+        outUl.hidden = false;
+        outZh.hidden = true;
+        lastOut = uey + "\n" + uly;
+      } else {
+        outZh.textContent = out;
+        outZh.hidden = false;
+        outUg.hidden = true;
+        outUl.hidden = true;
+        lastOut = out;
+      }
+      aiOut.hidden = false;
+    }).catch(function (err) {
+      aiErr.textContent = "翻译失败：" + (err && err.message ? err.message : "网络错误") + "。请稍后重试。";
+      aiErr.hidden = false;
+    }).then(function () {
+      goBtn.disabled = false;
+      goBtn.textContent = "翻译";
+    });
+  }
+
+  goBtn.addEventListener("click", doTranslate);
+  srcEl.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); doTranslate(); }
+  });
+  copyBtn.addEventListener("click", function () {
+    if (!lastOut) return;
+    if (navigator.clipboard) navigator.clipboard.writeText(lastOut);
+    copyBtn.textContent = "已复制";
+    setTimeout(function () { copyBtn.textContent = "复制"; }, 900);
+  });
+  aiOut.addEventListener("click", function (e) {
+    var t = e.target.closest(".tok");
+    if (t) showPop(t);
+  });
+
   // ---------- 初始化 ----------
   var pre = new URLSearchParams(location.search).get("q");
   if (pre) { qEl.value = pre; clearBtn.hidden = false; renderSearch(pre); }

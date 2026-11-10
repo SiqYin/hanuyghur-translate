@@ -97,6 +97,53 @@ body{
   letter-spacing:.01em;
 }
 
+/* ---------- tabs ---------- */
+.tabs{
+  max-width:880px;margin:12px auto 0;width:max-content;
+  display:flex;gap:3px;background:var(--card-2);border:1px solid var(--line);
+  border-radius:999px;padding:3px;
+}
+.tabs button{
+  border:0;background:none;color:var(--muted);font-family:var(--kai);
+  font-size:12.5px;padding:6px 18px;border-radius:999px;cursor:pointer;
+}
+.tabs button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+
+/* ---------- AI 翻译 ---------- */
+.ai-panel{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:16px;box-shadow:var(--shadow-1);
+}
+.seg{display:inline-flex;gap:2px;background:var(--card-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{
+  border:0;background:none;color:var(--muted);font-family:var(--kai);
+  font-size:12px;padding:6px 13px;border-radius:999px;cursor:pointer;
+}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+#src{
+  width:100%;margin-top:12px;border:1px solid var(--line);border-radius:12px;
+  padding:12px;font-family:var(--kai);font-size:15px;line-height:1.7;
+  resize:vertical;background:var(--paper);color:var(--ink);outline:none;
+}
+#src:focus{border-color:#cfc4b2}
+.ai-bar{display:flex;align-items:center;gap:8px;margin-top:9px}
+.ai-bar .spacer{flex:1}
+.ai-bar .cnt{font-size:11px;color:var(--faint)}
+.primary{
+  border:0;background:var(--ug);color:#fff;font-family:var(--kai);
+  font-size:13px;padding:9px 22px;border-radius:999px;cursor:pointer;
+}
+.primary:hover{background:#0c5a46}
+.ai-out{margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}
+.ai-out-head{display:flex;align-items:baseline;gap:8px;font-size:11px;color:var(--faint);letter-spacing:.1em}
+.ai-out-head .linky{margin-left:auto}
+.linky{border:0;background:none;color:var(--accent);font-family:var(--kai);font-size:11.5px;cursor:pointer;padding:0}
+.out-ug{font-size:24px;margin-top:9px}
+.out-ul{font-size:14px;margin-top:2px}
+.out-zh{font-size:15px;line-height:1.8;margin-top:6px}
+.ai-err{margin-top:12px;padding:10px 12px;border-radius:10px;background:#fcebeb;color:#a32d2d;font-size:12.5px;line-height:1.5}
+.ai-note{font-size:10.5px;color:var(--faint);margin:12px 0 0}
+
 /* ---------- main ---------- */
 main{max-width:880px;margin:0 auto;padding:14px 16px 30px}
 

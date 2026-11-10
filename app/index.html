@@ -22,22 +22,54 @@
     </div>
   </div>
 
-  <div class="searchbox">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-      <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>
-    </svg>
-    <input id="q" type="search" autocomplete="off" spellcheck="false"
-           placeholder="输入中文词、拼音，或维文…" aria-label="查词">
-    <button id="clear" type="button" aria-label="清除" hidden>×</button>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="功能">
+    <button type="button" class="on" data-view="dict" role="tab">查词</button>
+    <button type="button" data-view="ai" role="tab">翻译</button>
+  </nav>
+
+  <div id="dictBar">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>
+      </svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+             placeholder="输入中文词、拼音，或维文…" aria-label="查词">
+      <button id="clear" type="button" aria-label="清除" hidden>×</button>
+    </div>
+    <div class="hint" id="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
   </div>
-  <div class="hint" id="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
 </header>
 
 <main id="main">
-  <section id="results" aria-live="polite"></section>
-  <section id="empty" class="empty" hidden>
-    <p class="big">没有找到</p>
-    <p class="small">可以换一个说法，或试试单字、拼音。</p>
+  <section id="dictView">
+    <section id="results" aria-live="polite"></section>
+    <section id="empty" class="empty" hidden>
+      <p class="big">没有找到</p>
+      <p class="small">可以换一个说法，或试试单字、拼音。</p>
+    </section>
+  </section>
+
+  <section id="aiView" hidden>
+    <div class="ai-panel">
+      <div class="seg" id="dirSeg" role="group" aria-label="翻译方向">
+        <button type="button" class="on" data-dir="zh2ug">中 → 维</button>
+        <button type="button" data-dir="ug2zh">维 → 中</button>
+      </div>
+      <textarea id="src" rows="5" spellcheck="false" placeholder="输入要翻译的内容…" aria-label="翻译输入"></textarea>
+      <div class="ai-bar">
+        <span class="cnt" id="srcCount">0</span>
+        <span class="spacer"></span>
+        <button type="button" id="go" class="primary">翻译</button>
+      </div>
+      <div id="aiOut" class="ai-out" hidden>
+        <div class="ai-out-head"><span>译文</span><button type="button" id="copy" class="linky">复制</button></div>
+        <div id="outUg" class="ug out-ug" hidden></div>
+        <div id="outUl" class="ul out-ul" hidden></div>
+        <div id="outZh" class="out-zh" hidden></div>
+      </div>
+      <div id="aiErr" class="ai-err" hidden></div>
+      <p class="ai-note">AI 译文，仅供参考。点击维文词可查词。</p>
+    </div>
   </section>
 </main>
 
