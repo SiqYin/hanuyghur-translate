@@ -66,8 +66,8 @@ def main():
     ap.add_argument("--source", default=DEFAULT_SRC)
     ap.add_argument("--out", default="data/cache/examples.jsonl")
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--batch", type=int, default=8)
-    ap.add_argument("--workers", type=int, default=12)
+    ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--workers", type=int, default=8)
     args = ap.parse_args()
 
     pairs = load_pairs(args.source)

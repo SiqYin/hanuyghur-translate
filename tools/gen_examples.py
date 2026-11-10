@@ -22,6 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = os.environ.get("UG_API_BASE", "https://index-translate.bilibili.com/v1").rstrip("/") + "/chat/completions"
 MODEL = os.environ.get("UG_API_MODEL", "Index-Translate-35B-A3B")
 KEY = os.environ.get("UG_API_KEY", "EMPTY")
+TR_CHUNK = int(os.environ.get("UG_TR_CHUNK", "4"))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 
@@ -88,15 +89,15 @@ def gen_sentences(words):
 def translate(sentences):
     # 网关对长请求会 504；每 4 句一批，失败重试
     out = []
-    for i in range(0, len(sentences), 4):
-        chunk = sentences[i:i + 4]
+    for i in range(0, len(sentences), TR_CHUNK):
+        chunk = sentences[i:i + TR_CHUNK]
         p = ("把下列汉文句子逐句翻译成维吾尔语（老维文，2009 标准正字法，SOV 语序）。每句一行，只输出维文，不要编号、不要解释。\n"
              "维文只能出现维吾尔字母，绝对不能出现汉字。\n"
              "待翻译句子：\n" + "\n".join(chunk))
         got = None
         for attempt in range(3):
             try:
-                lines = lines_of(call(p, max_tokens=800))
+                lines = lines_of(call(p, max_tokens=2200 if TR_CHUNK >= 12 else 800))
                 if len(lines) == len(chunk):
                     got = lines
                     break
