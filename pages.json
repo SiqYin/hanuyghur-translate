@@ -1,0 +1,16 @@
+{
+  "url": "https://api.github.com/repos/SiqYin/hanuyghur-translate/pages",
+  "status": null,
+  "cname": null,
+  "custom_404": false,
+  "html_url": "https://siqyin.github.io/hanuyghur-translate/",
+  "build_type": "workflow",
+  "source": {
+    "branch": "main",
+    "path": "/"
+  },
+  "public": true,
+  "protected_domain_state": null,
+  "pending_domain_unverified_at": null,
+  "https_enforced": true
+}
