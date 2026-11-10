@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5f0">
+<title>汉维辞典 · خەنزۇچە-ئۇيغۇرچە لۇغەت</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f6e56'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23fffdf8'%3E汉%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brandrow">
+    <div class="brand">
+      <h1>汉维辞典</h1>
+      <p class="sub"><span lang="ug-Arab" dir="rtl">خەنزۇچە-ئۇيغۇرچە لۇغەت</span> · 双文字对照</p>
+    </div>
+    <div class="modes" id="modes" role="group" aria-label="维文显示模式">
+      <button type="button" data-mode="uey">老维文</button>
+      <button type="button" data-mode="uly">拉丁维文</button>
+      <button type="button" data-mode="both" class="on">对照</button>
+    </div>
+  </div>
+
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>
+    </svg>
+    <input id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="输入中文词、拼音，或维文…" aria-label="查词">
+    <button id="clear" type="button" aria-label="清除" hidden>×</button>
+  </div>
+  <div class="hint" id="hint">例：水 / shui / <bdi lang="ug-Arab" dir="rtl">سۇ</bdi> / su　·　点击任意维文词，查看另一种文字</div>
+</header>
+
+<main id="main">
+  <section id="results" aria-live="polite"></section>
+  <section id="empty" class="empty" hidden>
+    <p class="big">没有找到</p>
+    <p class="small">可以换一个说法，或试试单字、拼音。</p>
+  </section>
+</main>
+
+<div id="pop" class="pop" hidden></div>
+
+<footer class="foot">
+  <span id="count">正在加载词库…</span>
+  <span class="dot">·</span>
+  <span>Anatilim 数据底座 · 双文字引擎</span>
+</footer>
+
+<script src="ugconv.js"></script>
+<script src="morph.js"></script>
+<script src="data/meta.js"></script>
+<script src="data/core.js"></script>
+<script src="data/examples.js"></script>
+<script src="data/index.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

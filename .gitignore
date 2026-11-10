@@ -1,0 +1,17 @@
+node_modules/
+tools/pptr/
+*.log
+app_preview*.png
+shot_*.png
+ui_pop.png
+
+# 原始/清洗/生成数据体积大，不随代码仓库分发；
+# 归档目录本地保留，重建脚本见 README。
+data/raw/
+data/clean/
+data/cache/
+app/data/core.js
+app/data/index.js
+app/data/examples.js
+app/data/meta.js
+app/data/chunks/
