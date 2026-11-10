@@ -437,7 +437,8 @@
       resultsEl.innerHTML = "";
       emptyEl.hidden = true;
       countEl.textContent = "全库 " + (META.entries || 0).toLocaleString() + " 词 · " +
-        (META.senses || 0).toLocaleString() + " 义项 · " + (META.core || 0).toLocaleString() + " 核心词条已载入";
+        (META.senses || 0).toLocaleString() + " 义项 · " +
+        (window.EX_COUNT ? "例句 " + window.EX_COUNT.toLocaleString() + " 条" : (META.core || 0).toLocaleString() + " 核心词条已载入");
       return;
     }
 

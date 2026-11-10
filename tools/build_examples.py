@@ -84,7 +84,7 @@ def main():
     with io.open(OUT_CORE, "w", encoding="utf-8") as f:
         f.write("window.EXAMPLES=")
         f.write(json.dumps(core, ensure_ascii=False, separators=(",", ":")))
-        f.write(";\n")
+        f.write(";\nwindow.EX_COUNT=%d;\n" % len(data))
 
     total = 0
     for b, part in enumerate(shards):
