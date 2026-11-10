@@ -1,6 +1,6 @@
 # Han–Uyghur Dictionary · 汉维辞典
 
-<p align="center"><img src="docs/logo.png" width="120" alt="Han–Uyghur Dictionary"></p>
+<p align="center"><img src="docs/logo.png" width="200" alt="Han–Uyghur Dictionary"></p>
 
 [简体中文](README.md) · [English](README.en.md) · [ئۇيغۇرچە](README.ug.md)
 

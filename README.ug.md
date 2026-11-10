@@ -1,6 +1,6 @@
 # خەنزۇچە-ئۇيغۇرچە لۇغەت · 汉维辞典
 
-<p align="center"><img src="docs/logo.png" width="120" alt="خەنزۇچە-ئۇيغۇرچە لۇغەت"></p>
+<p align="center"><img src="docs/logo.png" width="200" alt="خەنزۇچە-ئۇيغۇرچە لۇغەت"></p>
 
 [简体中文](README.md) · [English](README.en.md) · [ئۇيغۇرچە](README.ug.md)
 
