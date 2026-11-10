@@ -33,3 +33,5 @@ mobile/android/local.properties
 /runs.json
 /rel.json
 /job.log
+
+.workbuddy/
