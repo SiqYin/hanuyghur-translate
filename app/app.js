@@ -841,7 +841,7 @@
       if (!out) throw new Error("空译文");
       if (dir === "zh2ug") {
         var uey = UG.normalizeUey(out);
-        var uly = UG.uey2ul(uey);
+        var uly = UG.capitalizeUly(UG.uey2ul(uey));
         outUg.innerHTML = ueyTokens(uey);
         outUl.textContent = uly;
         outUg.hidden = false;
