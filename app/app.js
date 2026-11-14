@@ -779,7 +779,7 @@
 
   function aiPrompt(text) {
     if (dir === "zh2ug") {
-      return "请把以下汉文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），2009 标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
+      return "请把以下汉文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
     }
     return "请把以下维吾尔语翻译成简体汉文。只输出汉文译文，不要解释。\n\n" + text;
   }
@@ -823,6 +823,11 @@
   function doTranslate() {
     var text = srcEl.value.trim();
     if (!text) { srcEl.focus(); return; }
+    if (dir === "ug2zh") {
+      // 维-汉输入：拉丁维文先转老维文再送翻译网关，老维文输入做归一化
+      if (UG.detectScript(text) === "uly") text = UG.ul2uey(UG.normalizeUly(text));
+      else text = UG.normalizeUey(text);
+    }
     aiErr.hidden = true;
     aiOut.hidden = true;
     goBtn.disabled = true;

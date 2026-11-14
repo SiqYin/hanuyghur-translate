@@ -199,15 +199,82 @@
       close: "تاقاش",
       lang_label: "تىل",
       credit: "Anatilim سانلىق ئاساسى · ئىككى خىل يېزىق ماتورى"
+    },
+    /* 拉丁维文界面（2008 官方 ULY 方案）：文案由 ug 区块经 ugconv.js 派生后校订 */
+    ugl: {
+      brand: "Xenzuche-Uyghurche Lughet",
+      sub: "Xenzuche ⇄ Uyghurche · ikki xil yëziq",
+      mode_uey: "Ereb yëziqi",
+      mode_uly: "Latin yëziqi",
+      mode_both: "Sëlishturma",
+      tab_dict: "Lughet",
+      tab_ai: "Terjime",
+      group_mode: "Yëziq körsitish haliti",
+      group_tabs: "Iqtidar",
+      group_dir: "Terjime yönilishi",
+      search_ph: "Xenzuche söz, pinyin yaki uyghurche kirgüzüng…",
+      hint: "Misal: 水 / shui / <bdi lang=\"ug-Arab\" dir=\"rtl\">سۇ</bdi> / su · her qandaq uyghurche sözni chëkip yene bir xil yëziqni körüng",
+      empty_title: "Tëpilmidi",
+      empty_sub: "Bashqa söz, bir xet yaki pinyin bilen sinap bëqing.",
+      dir_zh2ug: "Xenzuche-Uyghurche",
+      dir_ug2zh: "Uyghurche-Xenzuche",
+      src_ph_zh2ug: "Xenzuche kirgüzüp uyghurchigha terjime qiling…",
+      src_ph_ug2zh: "Uyghurche (Ereb yaki Latin yëziqi) kirgüzüp xenzuchigha terjime qiling…",
+      btn_translate: "Terjime",
+      btn_translating: "Terjime qiliniwatidu…",
+      out_title: "Terjime",
+      btn_copy: "Köchürüsh",
+      btn_copied: "Köchürüldi",
+      ai_note: "Bu sün'iy eqil terjimisi, peqet paydilinish üchün. Uyghurche sözni chëkip lughettin izdeng.",
+      ai_cfg: "Intërfëys tengshiki",
+      ai_cfg_note: "Süküttiki ammiwi Index-Translate mulazimëtiri cheklinishi mumkin. Xalighan OpenAI mas këlidighan ulinishni toldursingiz bolidu, tengshek peqet bu üskünide saqlinidu.",
+      ai_cfg_url: "Ulinish adrësi",
+      ai_cfg_model: "Modël",
+      ai_cfg_key: "Achquch",
+      ai_cfg_save: "Saqlash",
+      ai_cfg_saved: "Saqlandi",
+      ai_err: "Terjime meghlup boldi: {msg}. Sel turup qayta sinang.",
+      foot_all: "Jem'iy {n} söz · {s} meni · {e} misal",
+      foot_core: "Jem'iy {n} söz · {s} meni · {c} asasiy tëma yüklendi",
+      foot_found: "{n} tebiqildi · jem'iy {m} söz",
+      foot_all_short: "Jem'iy {m} söz",
+      foot_ug: "Uyghurche tëma · jem'iy {n} tëma",
+      badge_senses: "{n} meni",
+      more_senses: "Barliq {n} menini körsitish",
+      ex_title: "Misal",
+      family: "«{w}» bilen bashlinidighan sözler",
+      n_senses: "{n} meni",
+      related: "Munasiwetlik sözler",
+      homographs: "Oxshash shekillik tëmilar",
+      homographs_more: "Yene {n} oxshash shekillik tëma bar",
+      ug_entry_badge: "Uyghurche tëma",
+      ug_glosses: "Xenzuche izahat",
+      lookup_zh: "Xenzuchidin izdesh ›",
+      loading: "Yükliniwatidu…",
+      loading_ug: "Uyghurche lughet yükliniwatidu…",
+      not_found_ug: "Uyghurche tëma tëpilmidi",
+      not_found: "Tëpilmidi",
+      pop_uey_badge: "Ereb yëziqi · Latin yëziqini körüsh",
+      pop_uly_badge: "Latin yëziqi · Ereb yëziqini körüsh",
+      pop_entry: "Lughettiki mas tëma",
+      pop_lemma: "Asas shekil",
+      pop_lemma_miss: "Asas shekil asasiy lughette tëpilmidi, ëhtimal atalghu yaki uzun quyruq söz.",
+      pop_miss: "Musteqil tëma süpitide kirgüzülmigen, ëhtimal tuluqsiz shekil, ibare yaki atalghu. Ikki xil yëziq qa'ide boyiche almashturuldu.",
+      copy_uey: "Ereb yëziqini köchürüsh",
+      copy_uly: "Latin yëziqini köchürüsh",
+      close: "Taqash",
+      lang_label: "Til",
+      credit: "Anatilim sanliq asasi · ikki xil yëziq matori"
     }
   };
 
   var TITLE = {
     zh: "汉维辞典 · خەنزۇچە-ئۇيغۇرچە لۇغەت",
     en: "Han–Uyghur Dictionary · خەنزۇچە-ئۇيغۇرچە لۇغەت",
-    ug: "خەنزۇچە-ئۇيغۇرچە لۇغەت · 汉维辞典"
+    ug: "خەنزۇچە-ئۇيغۇرچە لۇغەت · 汉维辞典",
+    ugl: "Xenzuche-Uyghurche Lughet · 汉维辞典"
   };
-  var HTML_LANG = { zh: "zh-Hans", en: "en", ug: "ug" };
+  var HTML_LANG = { zh: "zh-Hans", en: "en", ug: "ug", ugl: "ug-Latn" };
 
   var lang = "zh";
   try { lang = localStorage.getItem("hanug.lang") || "zh"; } catch (e) {}
