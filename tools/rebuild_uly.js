@@ -144,7 +144,18 @@ walk(path.join(DATA, "examples_chunks"), f => {
   const win = {};
   new Function("window", fs.readFileSync(p, "utf8"))(win);
   rebuildExamples(win.EXAMPLES, "examples_core");
-  fs.writeFileSync(p, "window.EXAMPLES=" + JSON.stringify(win.EXAMPLES) + ";", "utf8");
+  // EX_COUNT = 全库例句词数（核心 + 分片），rebuild 过滤后重算
+  let totalWords = Object.keys(win.EXAMPLES).length;
+  const exDir = path.join(DATA, "examples_chunks");
+  for (const f of fs.readdirSync(exDir).filter(x => x.endsWith(".js"))) {
+    const w = {};
+    new Function("window", fs.readFileSync(path.join(exDir, f), "utf8"))(w);
+    for (const ck of Object.keys(w.EX_CHUNKS || {})) {
+      totalWords += Object.keys(w.EX_CHUNKS[ck] || {}).length;
+    }
+  }
+  fs.writeFileSync(p, "window.EXAMPLES=" + JSON.stringify(win.EXAMPLES) + ";\n" +
+    "window.EX_COUNT=" + totalWords + ";\n", "utf8");
 }
 
 console.log("rebuilt:", JSON.stringify(stats));
