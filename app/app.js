@@ -743,11 +743,25 @@
   var outZh = $("outZh");
   var aiErr = $("aiErr");
   var dirSeg = $("dirSeg");
+  var scriptSeg = $("scriptSeg");
   var copyBtn = $("copy");
   var dir = "zh2ug";
+  var script = "hans"; // 译入汉文时的输出用字（hans/hant）
   var lastOut = "";
+  try {
+    var _d = localStorage.getItem("hanug.ai.dir");
+    var _sc = localStorage.getItem("hanug.ai.script");
+    if (_d === "zh2ug" || _d === "ug2zh") dir = _d;
+    if (_sc === "hans" || _sc === "hant") script = _sc;
+  } catch (e) {}
+  function saveAiOpts() {
+    try {
+      localStorage.setItem("hanug.ai.dir", dir);
+      localStorage.setItem("hanug.ai.script", script);
+    } catch (e) {}
+  }
 
-  function switchView(v) {
+  function switchView(v, focus) {
     var isAi = v === "ai";
     dictView.hidden = isAi;
     aiView.hidden = !isAi;
@@ -755,7 +769,8 @@
     Array.prototype.forEach.call(tabs.children, function (b) {
       b.classList.toggle("on", b.getAttribute("data-view") === v);
     });
-    if (isAi) srcEl.focus();
+    try { localStorage.setItem("hanug.view", v); } catch (e) {}
+    if (isAi && focus !== false) srcEl.focus();
   }
 
   tabs.addEventListener("click", function (e) {
@@ -763,25 +778,53 @@
     if (b) switchView(b.getAttribute("data-view"));
   });
 
+  function applyDir() {
+    Array.prototype.forEach.call(dirSeg.children, function (x) {
+      x.classList.toggle("on", x.getAttribute("data-dir") === dir);
+    });
+    srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
+    scriptSeg.hidden = dir !== "ug2zh";
+    Array.prototype.forEach.call(scriptSeg.children, function (x) {
+      x.classList.toggle("on", x.getAttribute("data-script") === script);
+    });
+  }
+
   dirSeg.addEventListener("click", function (e) {
     var b = e.target.closest("[data-dir]");
     if (!b) return;
     dir = b.getAttribute("data-dir");
-    Array.prototype.forEach.call(dirSeg.children, function (x) {
-      x.classList.toggle("on", x === b);
-    });
-    srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
+    saveAiOpts();
+    applyDir();
     aiOut.hidden = true;
     aiErr.hidden = true;
   });
+
+  scriptSeg.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-script]");
+    if (!b) return;
+    script = b.getAttribute("data-script");
+    saveAiOpts();
+    applyDir();
+    aiOut.hidden = true;
+    aiErr.hidden = true;
+  });
+
+  // 还原上次进入时选择的界面与选项
+  var savedView = "dict";
+  try { if (localStorage.getItem("hanug.view") === "ai") savedView = "ai"; } catch (e) {}
+  applyDir();
+  switchView(savedView, false);
 
   srcEl.addEventListener("input", function () { srcCount.textContent = srcEl.value.length; });
 
   function aiPrompt(text) {
     if (dir === "zh2ug") {
-      return "请把以下汉文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉文=خەنزۇچە；词典=لۇغەت；新疆=شىنجاڭ；中国=جۇڭگو。\n\n" + text;
+      return "请把以下汉文翻译成维吾尔语。要求：老维文（ئۇيغۇر ئەرەب يېزىقى），标准正字法，SOV 语序，用词自然；只输出维文译文，不要解释、不要转写。\n术语：维吾尔语=ئۇيغۇرچە；汉文=خەنزۇچە؛词典=لۇغەت؛新疆=شىنجاڭ؛中国=جۇڭگو。\n\n" + text;
     }
-    return "请把以下维吾尔语翻译成简体汉文。只输出汉文译文，不要解释。\n\n" + text;
+    var tgt = script === "hant"
+      ? "繁体中文（必须全部使用繁体字，不要出现简体字）"
+      : "简体中文（全部使用简体字）";
+    return "请把以下维吾尔语翻译成" + tgt + "。只输出译文，不要解释。\n\n" + text;
   }
 
   var DEFAULT_API = {
@@ -917,7 +960,7 @@
     I18N.applyStatic();
     srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
     I18N.onChange(function () {
-      if (dir) srcEl.placeholder = dir === "zh2ug" ? T("src_ph_zh2ug") : T("src_ph_ug2zh");
+      applyDir();
       goBtn.textContent = goBtn.disabled ? T("btn_translating") : T("btn_translate");
       renderSearch(qEl.value.trim() ? qEl.value : "");
       hidePop();

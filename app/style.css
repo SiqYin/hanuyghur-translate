@@ -416,3 +416,31 @@ html[data-lang="ug"] .sense .num{text-align:left}
   font-family:var(--latin);font-size:12px;background:var(--paper);color:var(--ink);outline:none;
 }
 .ai-cfg input:focus{border-color:#cfc4b2}
+
+/* ---------- 更新检测弹窗 ---------- */
+.upd-overlay{
+  position:fixed;inset:0;z-index:60;
+  background:rgba(33,28,23,.38);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.upd-box{
+  width:min(340px,88vw);background:var(--card);color:var(--ink);
+  border-radius:var(--radius);box-shadow:var(--shadow-2);
+  padding:20px 20px 16px;text-align:center;
+  direction:ltr;
+}
+html[data-lang="ug"] .upd-box{direction:rtl}
+.upd-title{margin:0;font-size:16.5px;font-weight:700;letter-spacing:.02em}
+.upd-body{margin:8px 0 16px;font-size:13.5px;color:var(--muted);line-height:1.7}
+.upd-btns{display:flex;gap:10px}
+.upd-later,.upd-go{
+  flex:1;display:inline-block;text-align:center;cursor:pointer;
+  border-radius:10px;padding:9px 0;font-size:13.5px;font-weight:600;
+  text-decoration:none;
+}
+.upd-later{background:var(--card-2);color:var(--ink);border:1px solid var(--line)}
+.upd-later:hover{background:#eae4d7}
+.upd-go{background:var(--accent);color:#fff;border:1px solid var(--accent)}
+.upd-go:hover{filter:brightness(1.08)}
+.upd-later:active,.upd-go:active{transform:scale(.97)}

@@ -35,3 +35,4 @@ mobile/android/local.properties
 /job.log
 
 .workbuddy/
+tools/__pycache__/

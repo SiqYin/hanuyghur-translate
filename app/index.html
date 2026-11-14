@@ -22,6 +22,7 @@
     </div>
     <div class="langs" id="langs" role="group" data-i18n-aria="lang_label">
       <button type="button" data-lang-btn="zh" class="on" lang="zh-Hans">简中</button>
+      <button type="button" data-lang-btn="zht" lang="zh-Hant">繁中</button>
       <button type="button" data-lang-btn="en" lang="en">EN</button>
       <button type="button" data-lang-btn="ug" lang="ug">ئۇيغۇرچە</button>
       <button type="button" data-lang-btn="ugl" lang="ug-Latn">Uyghurchë</button>
@@ -69,6 +70,10 @@
         <button type="button" class="on" data-dir="zh2ug" data-i18n="dir_zh2ug">汉-维</button>
         <button type="button" data-dir="ug2zh" data-i18n="dir_ug2zh">维-汉</button>
       </div>
+      <div class="seg" id="scriptSeg" role="group" data-i18n-aria="group_dir" hidden>
+        <button type="button" class="on" data-script="hans" data-i18n="tr_script_hans">简体</button>
+        <button type="button" data-script="hant" data-i18n="tr_script_hant">繁体</button>
+      </div>
       <textarea id="src" rows="5" spellcheck="false" data-i18n-ph="src_ph_zh2ug" placeholder="输入汉文，翻译成维吾尔语…"></textarea>
       <div class="ai-bar">
         <span class="cnt" id="srcCount">0</span>
@@ -106,6 +111,17 @@
   <span data-i18n="credit">Anatilim 数据底座 · 双文字引擎</span>
 </footer>
 
+<div id="updOverlay" class="upd-overlay" hidden>
+  <div class="upd-box" role="dialog" aria-modal="true" aria-labelledby="updTitle">
+    <p class="upd-title" id="updTitle"></p>
+    <p class="upd-body" id="updBody"></p>
+    <div class="upd-btns">
+      <button type="button" id="updLater" class="upd-later"></button>
+      <a id="updGo" class="upd-go" href="https://github.com/SiqYin/hanuyghur-translate/releases/latest" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+</div>
+
 <script src="i18n.js"></script>
 <script src="ugconv.js"></script>
 <script src="morph.js"></script>
@@ -114,5 +130,6 @@
 <script src="data/examples_core.js"></script>
 <script src="data/index.js"></script>
 <script src="app.js"></script>
+<script src="update.js"></script>
 </body>
 </html>

@@ -68,7 +68,85 @@
       copy_uly: "复制拉丁维文",
       close: "关闭",
       lang_label: "语言",
-      credit: "Anatilim 数据底座 · 双文字引擎"
+      credit: "Anatilim 数据底座 · 双文字引擎",
+      tr_script_hans: "简体",
+      tr_script_hant: "繁体",
+      update_title: "发现新版本",
+      update_body: "已有更新版本 v{v}，是否前往更新？",
+      update_later: "暂不",
+      update_go: "更新"
+    },
+    /* 繁体中文界面：与简中同结构 */
+    zht: {
+      brand: "漢維辭典",
+      sub: "漢文 ⇄ 維吾爾語 · 雙文字對照",
+      mode_uey: "老維文",
+      mode_uly: "拉丁維文",
+      mode_both: "對照",
+      tab_dict: "查詞",
+      tab_ai: "翻譯",
+      group_mode: "維文顯示模式",
+      group_tabs: "功能",
+      group_dir: "翻譯方向",
+      search_ph: "輸入漢文詞、拼音，或維文…",
+      hint: "例：水 / shui / <bdi lang=\"ug-Arab\" dir=\"rtl\">سۇ</bdi> / su　·　點擊任意維文詞，查看另一種文字",
+      empty_title: "沒有找到",
+      empty_sub: "可以換一個說法，或試試單字、拼音。",
+      dir_zh2ug: "漢-維",
+      dir_ug2zh: "維-漢",
+      src_ph_zh2ug: "輸入漢文，翻譯成維吾爾語…",
+      src_ph_ug2zh: "輸入維吾爾語（老維文 / 拉丁維文），翻譯成漢文…",
+      btn_translate: "翻譯",
+      btn_translating: "翻譯中…",
+      out_title: "譯文",
+      btn_copy: "複製",
+      btn_copied: "已複製",
+      ai_note: "AI 譯文，僅供參考。點擊維文詞可查詞。",
+      ai_cfg: "介面設定",
+      ai_cfg_note: "預設連接公共 Index-Translate 網關，可能限流。可填入任意 OpenAI 相容端點，設定只保存在本機。",
+      ai_cfg_url: "介面位址",
+      ai_cfg_model: "模型",
+      ai_cfg_key: "密鑰",
+      ai_cfg_save: "儲存",
+      ai_cfg_saved: "已儲存",
+      ai_err: "翻譯失敗：{msg}。請稍後重試。",
+      foot_all: "全庫 {n} 詞 · {s} 義項 · 例句 {e} 條",
+      foot_core: "全庫 {n} 詞 · {s} 義項 · {c} 核心詞條已載入",
+      foot_found: "找到 {n} 條 · 全庫 {m} 詞",
+      foot_all_short: "全庫 {m} 詞",
+      foot_ug: "維語詞條 · 全庫 {n} 條",
+      badge_senses: "{n} 個義項",
+      more_senses: "展開全部 {n} 個義項",
+      ex_title: "例句",
+      family: "以「{w}」開頭",
+      n_senses: "{n} 義",
+      related: "其他相關詞",
+      homographs: "同形詞條",
+      homographs_more: "另有 {n} 個同形詞條",
+      ug_entry_badge: "維語詞條",
+      ug_glosses: "漢文釋義",
+      lookup_zh: "查漢文 ›",
+      loading: "載入中…",
+      loading_ug: "正在載入維語詞庫…",
+      not_found_ug: "沒有找到維語詞條",
+      not_found: "沒有找到",
+      pop_uey_badge: "老維文 · 點擊查看拉丁",
+      pop_uly_badge: "拉丁維文 · 點擊查看老維",
+      pop_entry: "詞典對應詞條",
+      pop_lemma: "原形",
+      pop_lemma_miss: "原形未在核心詞庫中找到，可能是專名或長尾詞。",
+      pop_miss: "未作為獨立詞條收錄，可能是屈折形式、短語或專名。兩種文字已按規則互轉。",
+      copy_uey: "複製老維文",
+      copy_uly: "複製拉丁維文",
+      close: "關閉",
+      lang_label: "語言",
+      credit: "Anatilim 資料底座 · 雙文字引擎",
+      tr_script_hans: "簡體",
+      tr_script_hant: "繁體",
+      update_title: "發現新版本",
+      update_body: "已有更新版本 v{v}，是否前往更新？",
+      update_later: "暫不",
+      update_go: "更新"
     },
     en: {
       brand: "Han–Uyghur Dictionary",
@@ -133,7 +211,13 @@
       copy_uly: "Copy Latin",
       close: "Close",
       lang_label: "Language",
-      credit: "Anatilim data base · dual-script engine"
+      credit: "Anatilim data base · dual-script engine",
+      tr_script_hans: "Simplified",
+      tr_script_hant: "Traditional",
+      update_title: "New version available",
+      update_body: "Version v{v} is available. Go to the update page?",
+      update_later: "Not now",
+      update_go: "Update"
     },
     ug: {
       brand: "خەنزۇچە-ئۇيغۇرچە لۇغەت",
@@ -198,7 +282,13 @@
       copy_uly: "لاتىن يېزىقىنى كۆچۈرۈش",
       close: "تاقاش",
       lang_label: "تىل",
-      credit: "Anatilim سانلىق ئاساسى · ئىككى خىل يېزىق ماتورى"
+      credit: "Anatilim سانلىق ئاساسى · ئىككى خىل يېزىق ماتورى",
+      tr_script_hans: "ئىخچام",
+      tr_script_hant: "ئەنئەنىۋى",
+      update_title: "يېڭى نەشىر بار",
+      update_body: "يېڭى نەشىر {v} چىقتى، يېڭىلاش بېتىگە بېرەمسىز؟",
+      update_later: "كېيىنرەك",
+      update_go: "يېڭىلاش"
     },
     /* 拉丁维文界面（2008 官方 ULY 方案）：文案由 ug 区块经 ugconv.js 派生后校订 */
     ugl: {
@@ -264,17 +354,24 @@
       copy_uly: "Latin yëziqini köchürüsh",
       close: "Taqash",
       lang_label: "Til",
-      credit: "Anatilim sanliq asasi · ikki xil yëziq matori"
+      credit: "Anatilim sanliq asasi · ikki xil yëziq matori",
+      tr_script_hans: "Ixcham",
+      tr_script_hant: "En'eniwi",
+      update_title: "Yëngi neshir bar",
+      update_body: "Yëngi neshir {v} chiqti, yëngilash bëtige berëmsiz?",
+      update_later: "Këyinrek",
+      update_go: "Yëngilash"
     }
   };
 
   var TITLE = {
     zh: "汉维辞典 · خەنزۇچە-ئۇيغۇرچە لۇغەت",
+    zht: "漢維辭典 · خەنزۇچە-ئۇيغۇرچە لۇغەت",
     en: "Han–Uyghur Dictionary · خەنزۇچە-ئۇيغۇرچە لۇغەت",
     ug: "خەنزۇچە-ئۇيغۇرچە لۇغەت · 汉维辞典",
     ugl: "Xenzuche-Uyghurche Lughet · 汉维辞典"
   };
-  var HTML_LANG = { zh: "zh-Hans", en: "en", ug: "ug", ugl: "ug-Latn" };
+  var HTML_LANG = { zh: "zh-Hans", zht: "zh-Hant", en: "en", ug: "ug", ugl: "ug-Latn" };
 
   var lang = "zh";
   try { lang = localStorage.getItem("hanug.lang") || "zh"; } catch (e) {}

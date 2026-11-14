@@ -1,7 +1,9 @@
 package cn.siqyin.hanuyghur;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
@@ -37,7 +39,19 @@ public class MainActivity extends Activity {
             s.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
 
-        web.setWebViewClient(new WebViewClient());
+        web.setWebViewClient(new WebViewClient() {
+            // 应用内只承载本地页面；任何 http(s) 跳转（如更新页）交给系统浏览器
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    } catch (Exception e) { }
+                    return true;
+                }
+                return false;
+            }
+        });
         web.setWebChromeClient(new WebChromeClient());
         setContentView(web);
         web.loadUrl("file:///android_asset/www/index.html");
